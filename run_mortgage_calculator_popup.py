@@ -99,6 +99,15 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         month += 1
 
     df_monthly = pd.DataFrame(amortization_rows)
+
+    st.subheader("📈 Mortgage Timeline: Remaining Balance")
+    chart_data = df_monthly[['Month', 'Balance']].set_index('Month')
+    st.line_chart(chart_data)
+    st.subheader("📊 Principal vs Interest Over Time")
+    pi_data = df_monthly[['Month', 'Principal', 'Interest']].set_index('Month')
+    st.line_chart(pi_data)
+    
+    
     st.dataframe(df_monthly.head(360))  # Limit to 30 years
 
     # Payoff Summary
