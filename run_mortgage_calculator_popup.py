@@ -76,7 +76,6 @@ df = pd.DataFrame(data)
 
 # Chart
 st.subheader("📈 Principal vs. Interest (Years 1–10)")
-fig, ax = plt.subplots()
 ax.plot(df['Year'], df['Principal Paid'], label='Principal Paid', marker='o')
 ax.plot(df['Year'], df['Interest Paid'], label='Interest Paid', marker='o')
 ax.set_xlabel('Year')
