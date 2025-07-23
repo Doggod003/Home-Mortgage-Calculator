@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import plotly.graph_objects as go
 
 st.set_page_config(page_title="Mortgage Calculator", layout="centered")
 st.title("🏡 Mortgage Calculator with PMI, Affordability, and Payoff Modeling")
@@ -17,7 +18,6 @@ extra_payment_percent = st.sidebar.slider("Extra % of Income Toward Loan Payoff"
 
 # Validation
 if home_price > 0 and down_payment >= 0 and down_payment < home_price and interest_rate > 0 and monthly_income > 0:
-    # Core Calculations
     loan_amount = home_price - down_payment
     monthly_interest = interest_rate / 100 / 12
     total_months = loan_term_years * 12
@@ -34,7 +34,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
     monthly_property_tax = (home_price * (property_tax_rate / 100)) / 12
     monthly_insurance = annual_insurance / 12
 
-    # PMI
+    # PMI Calculation
     pmi_monthly = 0
     if down_payment_percent < 20:
         pmi_rate = 0.0055 if loan_term_years == 30 else 0.003
@@ -99,16 +99,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         month += 1
 
     df_monthly = pd.DataFrame(amortization_rows)
-
-    st.subheader("📈 Mortgage Timeline: Remaining Balance")
-    chart_data = df_monthly[['Month', 'Balance']].set_index('Month')
-    st.line_chart(chart_data)
-    st.subheader("📊 Principal vs Interest Over Time")
-    pi_data = df_monthly[['Month', 'Principal', 'Interest']].set_index('Month')
-    st.line_chart(pi_data)
-    
-    
-    st.dataframe(df_monthly.head(360))  # Limit to 30 years
+    st.dataframe(df_monthly.head(360))
 
     # Payoff Summary
     st.subheader("⏱️ Payoff Scenario")
@@ -119,7 +110,66 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
     st.write(f"💸 Total paid: **${df_monthly['Payment'].sum():,.2f}**")
     st.write(f"📉 Total interest paid: **${df_monthly['Interest'].sum():,.2f}**")
 
-    # Download CSV
+    # Plotly Graph: Remaining Balance
+    st.subheader("📈 Mortgage Timeline: Remaining Balance")
+
+    fig_balance = go.Figure()
+    fig_balance.add_trace(go.Scatter(
+        x=df_monthly["Month"],
+        y=df_monthly["Balance"],
+        mode='lines+markers',
+        name="Remaining Balance"
+    ))
+    fig_balance.add_trace(go.Scatter(
+        x=[df_monthly["Month"].iloc[-1]],
+        y=[0],
+        mode='markers+text',
+        marker=dict(color='red', size=12, symbol='flag'),
+        text=["🏁 Paid Off"],
+        textposition="top center",
+        name="Finish"
+    ))
+    fig_balance.update_layout(
+        title="Loan Balance Over Time",
+        xaxis_title="Month",
+        yaxis_title="Remaining Balance ($)",
+        showlegend=True
+    )
+    st.plotly_chart(fig_balance)
+
+    # Plotly Graph: Principal vs Interest
+    st.subheader("📊 Principal vs Interest Over Time")
+    fig_pi = go.Figure()
+    fig_pi.add_trace(go.Scatter(
+        x=df_monthly["Month"],
+        y=df_monthly["Principal"],
+        mode='lines',
+        name="Principal"
+    ))
+    fig_pi.add_trace(go.Scatter(
+        x=df_monthly["Month"],
+        y=df_monthly["Interest"],
+        mode='lines',
+        name="Interest"
+    ))
+    fig_pi.add_trace(go.Scatter(
+        x=[df_monthly["Month"].iloc[-1]],
+        y=[0],
+        mode='markers+text',
+        marker=dict(color='green', size=12, symbol='flag'),
+        text=["🏁"],
+        textposition="top center",
+        name="Paid Off"
+    ))
+    fig_pi.update_layout(
+        title="Principal vs Interest Breakdown",
+        xaxis_title="Month",
+        yaxis_title="Amount ($)",
+        showlegend=True
+    )
+    st.plotly_chart(fig_pi)
+
+    # CSV Export
     csv = df_monthly.to_csv(index=False).encode('utf-8')
     st.download_button("💾 Download Full Monthly Amortization CSV", data=csv, file_name='monthly_amortization.csv', mime='text/csv')
 
