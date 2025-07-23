@@ -83,7 +83,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
     csv = df.to_csv(index=False).encode('utf-8')
     st.download_button("💾 Download CSV", data=csv, file_name='amortization_schedule.csv', mime='text/csv')
 
-else:
+
     st.warning("Please enter all required loan details to calculate your mortgage.")
     st.subheader("💡 Affordability Check")
     payment_to_income = (total_monthly_payment / monthly_income) * 100
