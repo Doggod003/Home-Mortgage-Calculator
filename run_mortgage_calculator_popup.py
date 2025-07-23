@@ -85,3 +85,47 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
 
 else:
     st.warning("Please enter all required loan details to calculate your mortgage.")
+    st.subheader("💡 Affordability Check")
+    payment_to_income = (total_monthly_payment / monthly_income) * 100
+    st.write(f"Your mortgage payment is **{payment_to_income:.2f}%** of your monthly income.")
+
+    if payment_to_income > 28:
+        st.error("⚠️ Warning: Your mortgage exceeds the 28% recommended housing ratio.")
+    elif payment_to_income > 36:
+        st.error("⚠️ Warning: Your total debt may exceed the safe 36% threshold.")
+    else:
+        st.success("✅ Your mortgage is within a healthy income range.")
+
+    # Early Payoff Modeling
+    st.subheader("📈 Early Payoff Projection")
+
+    balance = loan_amount
+    month = 0
+    extra_payment = (monthly_income * extra_payment_percent / 100)
+    total_paid = 0
+    total_interest = 0
+
+    while balance > 0 and month < 1200:  # Safety limit
+        interest_payment = balance * monthly_interest
+        principal_payment = monthly_principal_interest - interest_payment
+        total_principal_payment = principal_payment + extra_payment
+
+        if total_principal_payment > balance:
+            total_principal_payment = balance
+            interest_payment = balance * monthly_interest  # Final interest adjustment
+
+        balance -= total_principal_payment
+        total_paid += total_principal_payment + interest_payment
+        total_interest += interest_payment
+        month += 1
+
+    payoff_years = month // 12
+    payoff_remaining_months = month % 12
+
+    st.write(f"With {extra_payment_percent}% of your income allocated monthly:")
+    st.success(f"🏁 You would pay off the loan in **{payoff_years} years and {payoff_remaining_months} months**")
+    st.write(f"Total paid: **${total_paid:,.2f}**, of which interest: **${total_interest:,.2f}**")
+
+else:
+    st.warning("Please complete all inputs to view your results.")
+
