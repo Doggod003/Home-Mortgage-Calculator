@@ -7,12 +7,12 @@ st.title("🏡 Mortgage Calculator with PMI")
 # Sidebar Inputs
 st.sidebar.header("Enter Loan Details")
 
-home_price = st.sidebar.number_input("Home Price ($)", min_value=10000, step=1000, value=0)
-down_payment = st.sidebar.number_input("Down Payment ($)", min_value=0, step=1000, value=0)
-loan_term_years = st.sidebar.selectbox("Loan Term (years)", [15, 30])
-interest_rate = st.sidebar.number_input("Interest Rate (%)", min_value=0.0, step=0.1, value=0.0)
-property_tax_rate = st.sidebar.number_input("Property Tax Rate (%)", min_value=0.0, step=0.1, value=0.0)
-annual_insurance = st.sidebar.number_input("Annual Home Insurance ($)", min_value=0, step=100, value=0)
+home_price = st.sidebar.number_input("Home Price ($)", min_value=10000, step=1000, value=300000)
+down_payment = st.sidebar.number_input("Down Payment ($)", min_value=0, step=1000, value=60000)
+interest_rate = st.sidebar.number_input("Interest Rate (%)", min_value=0.0, step=0.1, value=6.5)
+property_tax_rate = st.sidebar.number_input("Property Tax Rate (%)", min_value=0.0, step=0.1, value=1.2)
+annual_insurance = st.sidebar.number_input("Annual Home Insurance ($)", min_value=0, step=100, value=1200)
+
 
 # Only run calculations if all required values are entered
 if home_price > 0 and down_payment >= 0 and down_payment < home_price and interest_rate > 0:
