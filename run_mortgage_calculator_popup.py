@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import plotly.graph_objects as go
+
 
 st.set_page_config(page_title="Mortgage Calculator", layout="centered")
 st.title("🏡 Mortgage Calculator with PMI, Affordability, and Payoff Modeling")
