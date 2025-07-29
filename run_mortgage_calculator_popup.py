@@ -32,11 +32,13 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
 
     monthly_property_tax = (home_price * (property_tax_rate / 100)) / 12
     monthly_insurance = annual_insurance / 12
-
+#PMI
     pmi_monthly = 0
     if down_payment_percent < 20:
         pmi_rate = 0.0055 if loan_term_years == 30 else 0.003
         pmi_monthly = (loan_amount * pmi_rate) / 12
+      pmi_drops_off = st.sidebar.checkbox("PMI drops off at 20% equity", value=True)
+
 
     total_monthly_payment = (
         monthly_principal_interest +
