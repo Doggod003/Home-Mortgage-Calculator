@@ -89,6 +89,8 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
     month = 1
     cumulative_interest = 0
     cumulative_principal = 0
+    monthly_hoa = hoa_schedule[month - 1]
+    monthly_maintenance = maint_schedule[month - 1]
 
 while balance > 0 and month <= 1200:
     interest_payment = balance * monthly_interest
