@@ -155,9 +155,9 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
             st.success("✅ Affordable based on income.")
 
     # Affordability Over Time Chart
-    df_monthly["DTI %"] = (df_monthly["Payment"] / monthly_income) * 100
-    st.subheader("📊 Mortgage as % of Monthly Income Over Time")
-    st.line_chart(df_monthly.set_index("Month")[["DTI %"]])
+        df_monthly["DTI %"] = (df_monthly["Payment"] / monthly_income) * 100
+        st.subheader("📊 Mortgage as % of Monthly Income Over Time")
+        st.line_chart(df_monthly.set_index("Month")[["DTI %"]])
 
     with tab3:
         st.subheader("📋 Monthly Amortization Schedule")
