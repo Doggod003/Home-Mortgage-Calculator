@@ -1,9 +1,11 @@
 import streamlit as st
 import pandas as pd
 
+# Page settings
 st.set_page_config(page_title="Mortgage Calculator", layout="centered")
 st.title("🏡 Mortgage Calculator with PMI, Affordability, and Payoff Modeling")
 
+# Sidebar Inputs
 st.sidebar.header("Enter Loan Details")
 home_price = st.sidebar.number_input("Home Price ($)", min_value=10000, value=300000, step=1000)
 down_payment = st.sidebar.number_input("Down Payment ($)", min_value=0, value=60000, step=1000)
@@ -13,9 +15,12 @@ property_tax_rate = st.sidebar.number_input("Property Tax Rate (%)", min_value=0
 annual_insurance = st.sidebar.number_input("Annual Home Insurance ($)", min_value=0, value=1200, step=100)
 monthly_income = st.sidebar.number_input("Monthly Income ($)", min_value=0, value=6000, step=100)
 extra_payment_percent = st.sidebar.slider("Extra % of Income Toward Loan Payoff", 0, 50, 10)
+pmi_drops_off = st.sidebar.checkbox("PMI drops off at 20% equity", value=True)
 
+# Validate inputs
 if home_price > 0 and down_payment >= 0 and down_payment < home_price and interest_rate > 0 and monthly_income > 0:
-  
+
+    # Core calculations
     loan_amount = home_price - down_payment
     monthly_interest = interest_rate / 100 / 12
     total_months = loan_term_years * 12
@@ -32,29 +37,30 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
 
     monthly_property_tax = (home_price * (property_tax_rate / 100)) / 12
     monthly_insurance = annual_insurance / 12
-#PMI
-    pmi_monthly = 0
+
+    # PMI setup
     pmi_rate = 0.0055 if loan_term_years == 30 else 0.003
-initial_pmi_monthly = (loan_amount * pmi_rate) / 12 if down_payment_percent < 20 else 0
-      pmi_drops_off = st.sidebar.checkbox("PMI drops off at 20% equity", value=True)
+    initial_pmi_monthly = (loan_amount * pmi_rate) / 12 if down_payment_percent < 20 else 0
 
-
+    # Total initial monthly payment
     total_monthly_payment = (
         monthly_principal_interest +
         monthly_property_tax +
         monthly_insurance +
-        pmi_monthly
+        initial_pmi_monthly
     )
 
+    # 📊 Monthly Breakdown
     st.subheader("📊 Monthly Payment Breakdown")
     st.write(f"**Loan Amount:** ${loan_amount:,.2f}")
     st.write(f"**Principal & Interest:** ${monthly_principal_interest:,.2f}")
     st.write(f"**Property Tax:** ${monthly_property_tax:,.2f}")
     st.write(f"**Insurance:** ${monthly_insurance:,.2f}")
-    if pmi_monthly > 0:
-        st.write(f"**PMI:** ${pmi_monthly:,.2f}")
+    if initial_pmi_monthly > 0:
+        st.write(f"**PMI:** ${initial_pmi_monthly:,.2f}")
     st.markdown(f"### 👉 Total Monthly Payment: **${total_monthly_payment:,.2f}**")
 
+    # 💡 Affordability Check
     st.subheader("💡 Affordability Check")
     payment_to_income = (total_monthly_payment / monthly_income) * 100
     st.write(f"Your mortgage payment is **{payment_to_income:.2f}%** of your monthly income.")
@@ -65,6 +71,7 @@ initial_pmi_monthly = (loan_amount * pmi_rate) / 12 if down_payment_percent < 20
     else:
         st.success("✅ Affordable based on income.")
 
+    # 📋 Amortization Schedule
     st.subheader("📋 Monthly Amortization Schedule (with Early Payoff)")
 
     amortization_rows = []
@@ -90,11 +97,19 @@ initial_pmi_monthly = (loan_amount * pmi_rate) / 12 if down_payment_percent < 20
         cumulative_interest += interest_payment
         cumulative_principal += total_principal
 
+        # PMI logic: drop at 20% equity
+        current_pmi = 0
+        if initial_pmi_monthly > 0:
+            equity_percent = (cumulative_principal + down_payment) / home_price * 100
+            if not pmi_drops_off or equity_percent < 20:
+                current_pmi = initial_pmi_monthly
+
         amortization_rows.append({
             'Month': month,
-            'Payment': round(total_payment, 2),
+            'Payment': round(total_payment + current_pmi, 2),
             'Principal': round(total_principal, 2),
             'Interest': round(interest_payment, 2),
+            'PMI': round(current_pmi, 2),
             'Cumulative Principal': round(cumulative_principal, 2),
             'Cumulative Interest': round(cumulative_interest, 2),
             'Balance': round(balance, 2)
@@ -105,20 +120,23 @@ initial_pmi_monthly = (loan_amount * pmi_rate) / 12 if down_payment_percent < 20
     df_monthly = pd.DataFrame(amortization_rows)
     st.dataframe(df_monthly.head(360))
 
+    # ⏱️ Payoff Summary
     st.subheader("⏱️ Payoff Summary")
     payoff_months = len(df_monthly)
-    payoff_years = payoff_months // 12
-    payoff_remainder = payoff_months % 12
-    st.success(f"🏁 Paid off in {payoff_years} years and {payoff_remainder} months.")
+    years = payoff_months // 12
+    months = payoff_months % 12
+    st.success(f"🏁 Paid off in {years} years and {months} months.")
     st.write(f"💸 Total paid: **${df_monthly['Payment'].sum():,.2f}**")
     st.write(f"📉 Total interest paid: **${df_monthly['Interest'].sum():,.2f}**")
 
+    # 📈 Charts
     st.subheader("📈 Balance Timeline")
     st.line_chart(df_monthly.set_index("Month")[["Balance"]])
 
     st.subheader("📊 Principal vs Interest Over Time")
-    st.line_chart(df_monthly.set_index("Month")[["Principal", "Interest"]])
+    st.line_chart(df_monthly.set_index("Month")[["Principal", "Interest", "PMI"]])
 
+    # 💾 Download CSV
     csv = df_monthly.to_csv(index=False).encode('utf-8')
     st.download_button(
         "💾 Download Full Monthly Amortization CSV",
