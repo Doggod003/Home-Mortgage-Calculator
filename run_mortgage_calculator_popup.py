@@ -47,8 +47,8 @@ annual_insurance = st.sidebar.number_input("Annual Home Insurance ($)", min_valu
 monthly_income = st.sidebar.number_input("Monthly Income ($)", min_value=0, value=6000, step=100)
 extra_payment_percent = st.sidebar.slider("Extra % of Income Toward Loan Payoff", 0, 50, 10)
 pmi_drops_off = st.sidebar.checkbox("PMI drops off at 20% equity", value=True)
-monthly_hoa = st.sidebar.number_input("Monthly HOA Fee ($)", min_value=0, value=0, step=50)
-monthly_maintenance = st.sidebar.number_input("Monthly Maintenance Estimate ($)", min_value=0, value=0, step=50)
+base_hoa = st.sidebar.number_input("Monthly HOA Fee (Starting Value $)", min_value=0, value=100, step=50)
+base_maint = st.sidebar.number_input("Monthly Maintenance Estimate (Starting Value $)", min_value=0, value=150, step=50)
 
 
 # Input Validation
@@ -84,11 +84,14 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
     )
 
     # Amortization calculation
+    hoa_schedule, maint_schedule = simulate_hoa_and_maintenance(1200, base_hoa, base_maint)
     amortization_rows = []
     balance = loan_amount
     month = 1
     cumulative_interest = 0
     cumulative_principal = 0
+    monthly_hoa = hoa_schedule[month - 1]
+    monthly_maintenance = maint_schedule[month - 1]
 
 while balance > 0 and month <= 1200:
     interest_payment = balance * monthly_interest
@@ -164,7 +167,9 @@ while balance > 0 and month <= 1200:
             'PMI': round(current_pmi, 2),
             'Cumulative Principal': round(cumulative_principal, 2),
             'Cumulative Interest': round(cumulative_interest, 2),
-            'Balance': round(balance, 2)
+            'Balance': round(balance, 2),
+            'HOA': round(monthly_hoa, 2),
+            'Maintenance': round(monthly_maintenance, 2)
         })
 
         month += 1
