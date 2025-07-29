@@ -47,6 +47,9 @@ annual_insurance = st.sidebar.number_input("Annual Home Insurance ($)", min_valu
 monthly_income = st.sidebar.number_input("Monthly Income ($)", min_value=0, value=6000, step=100)
 extra_payment_percent = st.sidebar.slider("Extra % of Income Toward Loan Payoff", 0, 50, 10)
 pmi_drops_off = st.sidebar.checkbox("PMI drops off at 20% equity", value=True)
+monthly_hoa = st.sidebar.number_input("Monthly HOA Fee ($)", min_value=0, value=0, step=50)
+monthly_maintenance = st.sidebar.number_input("Monthly Maintenance Estimate ($)", min_value=0, value=0, step=50)
+
 
 # Input Validation
 if home_price > 0 and down_payment >= 0 and down_payment < home_price and interest_rate > 0 and monthly_income > 0:
@@ -76,6 +79,8 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         monthly_property_tax +
         monthly_insurance +
         initial_pmi_monthly
+        monthly_hoa+
+        monthly_maintenance
     )
 
     # Amortization calculation
@@ -141,6 +146,10 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         st.write(f"**Insurance:** ${monthly_insurance:,.2f}")
         if initial_pmi_monthly > 0:
             st.write(f"**PMI (Initial):** ${initial_pmi_monthly:,.2f}")
+        if monthly_hoa > 0:
+            st.write(f"**HOA Fee:** ${monthly_hoa:,.2f}")
+        if monthly_maintenance > 0:
+            st.write(f"**Maintenance:** ${monthly_maintenance:,.2f}")
         st.markdown(f"### 👉 Total Monthly Payment: **${total_monthly_payment:,.2f}**")
 
     with tab2:
