@@ -1,5 +1,63 @@
+from fpdf import FPDF
+import tempfile
 import streamlit as st
 import pandas as pd
+class MortgagePDF(FPDF):
+    def header(self):
+        self.set_font("Arial", "B", 12)
+        self.cell(0, 10, "Mortgage Summary Report", ln=True, align="C")
+        self.ln(10)
+
+    def section_title(self, title):
+        self.set_font("Arial", "B", 11)
+        self.cell(0, 10, title, ln=True)
+        self.ln(1)
+
+    def section_body(self, text):
+        self.set_font("Arial", "", 10)
+        self.multi_cell(0, 8, text)
+        self.ln()
+
+def generate_pdf_summary(summary_data):
+    pdf = MortgagePDF()
+    pdf.add_page()
+
+    pdf.section_title("Loan Overview")
+    overview = (
+        f"Home Price: ${summary_data['Home Price']:,}\n"
+        f"Loan Amount: ${summary_data['Loan Amount']:,}\n"
+        f"Interest Rate: {summary_data['Interest Rate']}%\n"
+        f"Loan Term: {summary_data['Loan Term']} years\n"
+    )
+    pdf.section_body(overview)
+
+    pdf.section_title("Monthly Payment Breakdown")
+    payment = (
+        f"Principal & Interest: ${summary_data['P&I']:,}\n"
+        f"Property Tax: ${summary_data['Tax']:,}\n"
+        f"Insurance: ${summary_data['Insurance']:,}\n"
+        f"PMI: ${summary_data['PMI']:,}\n"
+        f"HOA: ${summary_data['HOA']:,}\n"
+        f"Maintenance: ${summary_data['Maintenance']:,}\n"
+        f"Total Monthly: ${summary_data['Total Payment']:,}"
+    )
+    pdf.section_body(payment)
+
+    pdf.section_title("Affordability Check")
+    pdf.section_body(f"DTI (Debt-to-Income Ratio): {summary_data['DTI']:.2f}%")
+
+    pdf.section_title("Payoff Summary")
+    payoff = (
+        f"Time to Payoff: {summary_data['Payoff Time']}\n"
+        f"Total Paid: ${summary_data['Total Paid']:,}\n"
+        f"Total Interest Paid: ${summary_data['Total Interest']:,}"
+    )
+    pdf.section_body(payoff)
+
+    temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".pdf")
+    pdf.output(temp_file.name)
+    return temp_file.name
+
 
 # ----------------------------
 # Simulate HOA and Maintenance
@@ -210,6 +268,34 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
     with tab5:
         csv = df_monthly.to_csv(index=False).encode('utf-8')
         st.download_button("Download CSV", data=csv, file_name="monthly_amortization.csv", mime="text/csv")
+        pdf_data = {
+        "Home Price": home_price,
+        "Loan Amount": loan_amount,
+        "Interest Rate": interest_rate,
+        "Loan Term": loan_term_years,
+        "P&I": round(monthly_principal_interest, 2),
+        "Tax": round(monthly_property_tax, 2),
+        "Insurance": round(monthly_insurance, 2),
+        "PMI": round(initial_pmi_monthly, 2),
+        "HOA": round(base_hoa, 2),
+        "Maintenance": round(base_maint, 2),
+        "Total Payment": round(total_monthly_payment, 2),
+        "DTI": round((total_monthly_payment / monthly_income) * 100, 2),
+        "Payoff Time": f"{years}y {months}m",
+        "Total Paid": round(df_monthly['Payment'].sum(), 2),
+        "Total Interest": round(df_monthly['Interest'].sum(), 2),
+    }
+
+    pdf_path = generate_pdf_summary(pdf_data)
+    
+    with tab5:
+        with open(pdf_path, "rb") as file:
+            st.download_button(
+                label="📄 Download PDF Report",
+                data=file,
+                file_name="Mortgage_Summary.pdf",
+                mime="application/pdf"
+            )
 
     with tab6:
         st.subheader("📂 Calculation History")
