@@ -143,16 +143,21 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
             st.write(f"**PMI (Initial):** ${initial_pmi_monthly:,.2f}")
         st.markdown(f"### 👉 Total Monthly Payment: **${total_monthly_payment:,.2f}**")
 
-    with tab2:
-        st.subheader("💡 Affordability Check")
-        payment_to_income = (total_monthly_payment / monthly_income) * 100
-        st.write(f"Your mortgage payment is **{payment_to_income:.2f}%** of your monthly income.")
-        if payment_to_income > 36:
-            st.error("🚨 Exceeds 36% — risky debt-to-income ratio.")
-        elif payment_to_income > 28:
-            st.warning("⚠️ Above 28% — higher than recommended for housing.")
-        else:
-            st.success("✅ Affordable based on income.")
+   with tab2:
+    st.subheader("💡 Affordability Check")
+    payment_to_income = (total_monthly_payment / monthly_income) * 100
+    st.write(f"Your mortgage payment is **{payment_to_income:.2f}%** of your monthly income.")
+    if payment_to_income > 36:
+        st.error("🚨 Exceeds 36% — risky debt-to-income ratio.")
+    elif payment_to_income > 28:
+        st.warning("⚠️ Above 28% — higher than recommended for housing.")
+    else:
+        st.success("✅ Affordable based on income.")
+
+    # Affordability Over Time Chart
+    df_monthly["DTI %"] = (df_monthly["Payment"] / monthly_income) * 100
+    st.subheader("📊 Mortgage as % of Monthly Income Over Time")
+    st.line_chart(df_monthly.set_index("Month")[["DTI %"]])
 
     with tab3:
         st.subheader("📋 Monthly Amortization Schedule")
