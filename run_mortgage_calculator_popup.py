@@ -221,8 +221,9 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         "📋 Amortization",
         "📈 Charts",
         "📊 Comparison",
-        "💾 Export",
-        "📂 Archive"
+        "📂 Archive",
+        "💾 Export"
+        
         
     ])
 
