@@ -80,7 +80,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         monthly_insurance +
         initial_pmi_monthly+
         base_hoa+
-        base_maintenance
+        base_maint
     )
 
     # Amortization calculation
@@ -145,7 +145,7 @@ while balance > 0 and month <= 1200:
                 monthly_principal_interest + 
                 extra_payment +
                 base_hoa+
-                base_maintenance
+                base_maint
             )
 
         balance -= total_principal
