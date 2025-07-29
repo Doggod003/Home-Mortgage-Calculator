@@ -44,7 +44,12 @@ down_payment = home_price * (down_payment_percent_input / 100)
 loan_term_years = st.sidebar.selectbox("Loan Term (years)", [15, 30], index=0 if default_term == 15 else 1)
 interest_rate = st.sidebar.number_input("Interest Rate (%)", min_value=0.0, value=default_interest, step=0.1)
 
-
+# Additional required inputs
+property_tax_rate = st.sidebar.number_input("Property Tax Rate (%)", min_value=0.0, value=1.2, step=0.1)
+annual_insurance = st.sidebar.number_input("Annual Home Insurance ($)", min_value=0, value=1200, step=100)
+monthly_income = st.sidebar.number_input("Monthly Income ($)", min_value=0, value=6000, step=100)
+extra_payment_percent = st.sidebar.slider("Extra % of Income Toward Loan Payoff", 0, 50, 10)
+pmi_drops_off = st.sidebar.checkbox("PMI drops off at 20% equity", value=True)
 
 
 
