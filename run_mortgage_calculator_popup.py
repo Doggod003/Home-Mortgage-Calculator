@@ -1,6 +1,9 @@
 import streamlit as st
 import pandas as pd
 
+# ----------------------------
+# Simulate HOA and Maintenance
+# ----------------------------
 def simulate_hoa_and_maintenance(months, base_hoa=100, base_maint=150, annual_inflation=0.03):
     hoa_list = []
     maint_list = []
@@ -10,7 +13,7 @@ def simulate_hoa_and_maintenance(months, base_hoa=100, base_maint=150, annual_in
         hoa = base_hoa * inflation_factor
         maintenance = base_maint * inflation_factor
 
-        # Simulate spikes every 5 or 10 years
+        # Simulate major maintenance spikes every 5 or 10 years
         if m % 60 == 0 and m != 0:
             maintenance += 2000 * (0.75 + 0.5 * (m % 120 == 0))
 
@@ -19,39 +22,20 @@ def simulate_hoa_and_maintenance(months, base_hoa=100, base_maint=150, annual_in
 
     return hoa_list, maint_list
 
-payoff_months = len(df_monthly)
-years = payoff_months // 12
-months = payoff_months % 12
-if "history" not in st.session_state:
-    st.session_state.history = []
-    st.session_state.history.append({
-        "Home Price": home_price,
-        "Loan Amount": loan_amount,
-        "Interest Rate": interest_rate,
-        "Monthly Payment": round(total_monthly_payment, 2),
-        "Years to Payoff": f"{years}y {months}m",
-        "Total Interest": round(df_monthly['Interest'].sum(), 2)
-    })
-
-
+# ----------------------------
+# Streamlit UI
+# ----------------------------
 st.set_page_config(page_title="Mortgage Calculator", layout="centered")
 st.title("🏡 Mortgage Calculator with PMI, Affordability, and Payoff Modeling")
 
+if "history" not in st.session_state:
+    st.session_state.history = []
+
 # Sidebar Inputs
 st.sidebar.header("Loan Setup")
-
-# Home price input
 home_price = st.sidebar.number_input("Home Price ($)", min_value=10000, value=300000, step=1000)
+loan_type = st.sidebar.selectbox("Loan Type Preset", ["Conventional (20%)", "FHA (3.5%)", "VA (0%)", "Custom"])
 
-# Loan type selection
-loan_type = st.sidebar.selectbox("Loan Type Preset", [
-    "Conventional (20%)",
-    "FHA (3.5%)",
-    "VA (0%)",
-    "Custom"
-])
-
-# Apply preset defaults
 if loan_type == "Conventional (20%)":
     default_down_percent = 20.0
     default_interest = 6.5
@@ -69,7 +53,6 @@ else:
     default_interest = 6.5
     default_term = 30
 
-# Editable inputs
 down_payment_percent_input = st.sidebar.number_input("Down Payment (% of Home Price)", 0.0, 100.0, value=default_down_percent, step=0.5)
 down_payment = home_price * (down_payment_percent_input / 100)
 
@@ -80,90 +63,41 @@ annual_insurance = st.sidebar.number_input("Annual Home Insurance ($)", min_valu
 monthly_income = st.sidebar.number_input("Monthly Income ($)", min_value=0, value=6000, step=100)
 extra_payment_percent = st.sidebar.slider("Extra % of Income Toward Loan Payoff", 0, 50, 10)
 pmi_drops_off = st.sidebar.checkbox("PMI drops off at 20% equity", value=True)
-base_hoa = st.sidebar.number_input("Monthly HOA Fee (Starting Value $)", min_value=0, value=100, step=50)
-base_maint = st.sidebar.number_input("Monthly Maintenance Estimate (Starting Value $)", min_value=0, value=150, step=50)
+base_hoa = st.sidebar.number_input("Monthly HOA Fee ($)", min_value=0, value=100, step=50)
+base_maint = st.sidebar.number_input("Monthly Maintenance Estimate ($)", min_value=0, value=150, step=50)
 
-
-# Input Validation
+# ----------------------------
+# Mortgage Calculation
+# ----------------------------
 if home_price > 0 and down_payment >= 0 and down_payment < home_price and interest_rate > 0 and monthly_income > 0:
-
     loan_amount = home_price - down_payment
     monthly_interest = interest_rate / 100 / 12
     total_months = loan_term_years * 12
     down_payment_percent = (down_payment / home_price) * 100
 
-    if monthly_interest == 0:
-        monthly_principal_interest = loan_amount / total_months
-    else:
-        monthly_principal_interest = (
-            loan_amount *
-            (monthly_interest * (1 + monthly_interest) ** total_months) /
-            ((1 + monthly_interest) ** total_months - 1)
-        )
+    monthly_principal_interest = (
+        loan_amount *
+        (monthly_interest * (1 + monthly_interest) ** total_months) /
+        ((1 + monthly_interest) ** total_months - 1)
+    ) if monthly_interest > 0 else loan_amount / total_months
 
     monthly_property_tax = (home_price * (property_tax_rate / 100)) / 12
     monthly_insurance = annual_insurance / 12
-
     pmi_rate = 0.0055 if loan_term_years == 30 else 0.003
     initial_pmi_monthly = (loan_amount * pmi_rate) / 12 if down_payment_percent < 20 else 0
 
-    total_monthly_payment = (
-        monthly_principal_interest +
-        monthly_property_tax +
-        monthly_insurance +
-        initial_pmi_monthly+
-        base_hoa+
-        base_maint
-    )
-
-    # Amortization calculation
     hoa_schedule, maint_schedule = simulate_hoa_and_maintenance(1200, base_hoa, base_maint)
+
     amortization_rows = []
     balance = loan_amount
     month = 1
     cumulative_interest = 0
     cumulative_principal = 0
-    monthly_hoa = hoa_schedule[month - 1]
-    monthly_maintenance = maint_schedule[month - 1]
-
-while balance > 0 and month <= 1200:
-    interest_payment = balance * monthly_interest
-    principal_payment = monthly_principal_interest - interest_payment
-    extra_payment = (extra_payment_percent / 100) * monthly_income
-    total_principal = principal_payment + extra_payment
-
-    if total_principal > balance:
-        total_principal = balance
-        principal_payment = balance
-        total_payment = balance + interest_payment
-    else:
-        total_payment = monthly_principal_interest + extra_payment
-
-    balance -= total_principal
-    cumulative_interest += interest_payment
-    cumulative_principal += total_principal
-
-    # PMI drop-off logic
-    current_pmi = 0
-    if initial_pmi_monthly > 0:
-        equity_percent = (cumulative_principal + down_payment) / home_price * 100
-        if not pmi_drops_off or equity_percent < 20:
-            current_pmi = initial_pmi_monthly
-    amortization_rows.append({
-        'Month': month,
-        'Payment': round(total_payment + current_pmi, 2),
-        'Principal': round(total_principal, 2),
-        'Interest': round(interest_payment, 2),
-        'PMI': round(current_pmi, 2),
-        'HOA': round(monthly_hoa, 2),
-        'Maintenance': round(monthly_maintenance, 2),
-        'Cumulative Principal': round(cumulative_principal, 2),
-        'Cumulative Interest': round(cumulative_interest, 2),
-        'Balance': round(balance, 2)
-})
-    month += 1
 
     while balance > 0 and month <= 1200:
+        monthly_hoa = hoa_schedule[month - 1]
+        monthly_maintenance = maint_schedule[month - 1]
+
         interest_payment = balance * monthly_interest
         principal_payment = monthly_principal_interest - interest_payment
         extra_payment = (extra_payment_percent / 100) * monthly_income
@@ -172,20 +106,19 @@ while balance > 0 and month <= 1200:
         if total_principal > balance:
             total_principal = balance
             principal_payment = balance
-            total_payment = balance + interest_payment
+            total_payment = balance + interest_payment + monthly_hoa + monthly_maintenance
         else:
-            total_payment =(
-                monthly_principal_interest + 
+            total_payment = (
+                monthly_principal_interest +
                 extra_payment +
-                base_hoa+
-                base_maint
+                monthly_hoa +
+                monthly_maintenance
             )
 
         balance -= total_principal
         cumulative_interest += interest_payment
         cumulative_principal += total_principal
 
-        # PMI drop-off logic
         current_pmi = 0
         if initial_pmi_monthly > 0:
             equity_percent = (cumulative_principal + down_payment) / home_price * 100
@@ -198,29 +131,33 @@ while balance > 0 and month <= 1200:
             'Principal': round(total_principal, 2),
             'Interest': round(interest_payment, 2),
             'PMI': round(current_pmi, 2),
+            'HOA': round(monthly_hoa, 2),
+            'Maintenance': round(monthly_maintenance, 2),
             'Cumulative Principal': round(cumulative_principal, 2),
             'Cumulative Interest': round(cumulative_interest, 2),
-            'Balance': round(balance, 2),
-            'HOA': round(monthly_hoa, 2),
-            'Maintenance': round(monthly_maintenance, 2)
+            'Balance': round(balance, 2)
         })
 
         month += 1
 
     df_monthly = pd.DataFrame(amortization_rows)
+    payoff_months = len(df_monthly)
+    years = payoff_months // 12
+    months = payoff_months % 12
+
     st.session_state.history.append({
         "Home Price": home_price,
         "Loan Amount": loan_amount,
         "Interest Rate": interest_rate,
-        "Monthly Payment": round(total_monthly_payment, 2),
+        "Monthly Payment": round(df_monthly["Payment"].iloc[0], 2),
         "Years to Payoff": f"{years}y {months}m",
         "Total Interest": round(df_monthly['Interest'].sum(), 2)
-        })
+    })
 
-    
-
-    # ✅ Tabbed Layout
-    tab1, tab2, tab3, tab4, tab5, tab6= st.tabs([
+    # ----------------------------
+    # Tabs
+    # ----------------------------
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
         "📊 Monthly Breakdown",
         "💡 Affordability",
         "📋 Amortization",
@@ -237,10 +174,9 @@ while balance > 0 and month <= 1200:
         st.write(f"**Insurance:** ${monthly_insurance:,.2f}")
         if initial_pmi_monthly > 0:
             st.write(f"**PMI (Initial):** ${initial_pmi_monthly:,.2f}")
-        if monthly_hoa > 0:
-            st.write(f"**HOA Fee:** ${monthly_hoa:,.2f}")
-        if monthly_maintenance > 0:
-            st.write(f"**Maintenance:** ${monthly_maintenance:,.2f}")
+        st.write(f"**HOA (Initial):** ${base_hoa:,.2f}")
+        st.write(f"**Maintenance (Initial):** ${base_maint:,.2f}")
+        total_monthly_payment = monthly_principal_interest + monthly_property_tax + monthly_insurance + initial_pmi_monthly + base_hoa + base_maint
         st.markdown(f"### 👉 Total Monthly Payment: **${total_monthly_payment:,.2f}**")
 
     with tab2:
@@ -253,18 +189,12 @@ while balance > 0 and month <= 1200:
             st.warning("⚠️ Above 28% — higher than recommended for housing.")
         else:
             st.success("✅ Affordable based on income.")
-
-    # Affordability Over Time Chart
         df_monthly["DTI %"] = (df_monthly["Payment"] / monthly_income) * 100
-        st.subheader("📊 Mortgage as % of Monthly Income Over Time")
         st.line_chart(df_monthly.set_index("Month")[["DTI %"]])
 
     with tab3:
         st.subheader("📋 Monthly Amortization Schedule")
         st.dataframe(df_monthly.head(360))
-        payoff_months = len(df_monthly)
-        years = payoff_months // 12
-        months = payoff_months % 12
         st.success(f"🏁 Paid off in {years} years and {months} months.")
         st.write(f"💸 Total paid: **${df_monthly['Payment'].sum():,.2f}**")
         st.write(f"📉 Total interest paid: **${df_monthly['Interest'].sum():,.2f}**")
@@ -274,19 +204,15 @@ while balance > 0 and month <= 1200:
         st.line_chart(df_monthly.set_index("Month")[["Balance"]])
         st.subheader("📊 Principal vs Interest Over Time")
         st.line_chart(df_monthly.set_index("Month")[["Principal", "Interest", "PMI"]])
+        st.subheader("🏠 HOA & Maintenance Over Time")
+        st.line_chart(df_monthly.set_index("Month")[["HOA", "Maintenance"]])
 
     with tab5:
-        st.subheader("💾 Export Full Schedule")
         csv = df_monthly.to_csv(index=False).encode('utf-8')
-        st.download_button(
-            "Download CSV",
-            data=csv,
-            file_name="monthly_amortization.csv",
-            mime="text/csv"
-        )
-    with tab6:
-        st.subheader("📂 Calculation History (this session)")
+        st.download_button("Download CSV", data=csv, file_name="monthly_amortization.csv", mime="text/csv")
 
+    with tab6:
+        st.subheader("📂 Calculation History")
         if st.session_state.history:
             df_history = pd.DataFrame(st.session_state.history)
             st.dataframe(df_history)
