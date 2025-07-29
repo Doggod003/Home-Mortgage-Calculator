@@ -84,7 +84,7 @@ def simulate_hoa_and_maintenance(months, base_hoa=100, base_maint=150, annual_in
 # Streamlit UI
 # ----------------------------
 st.set_page_config(page_title="Mortgage Calculator", layout="centered")
-st.title("🏡 Mortgage Calculator with PMI, Affordability, and Payoff Modeling")
+st.title("🏡 Mortgage Calculator")
 
 if "history" not in st.session_state:
     st.session_state.history = []
