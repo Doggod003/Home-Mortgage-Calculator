@@ -97,6 +97,8 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         'Balance': round(balance, 2)
 })
 
+})
+
     while balance > 0 and month <= 1200:
         interest_payment = balance * monthly_interest
         principal_payment = monthly_principal_interest - interest_payment
