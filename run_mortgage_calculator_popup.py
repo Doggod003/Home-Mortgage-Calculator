@@ -101,7 +101,12 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
             principal_payment = balance
             total_payment = balance + interest_payment
         else:
-            total_payment = monthly_principal_interest + extra_payment
+            total_payment =(
+                monthly_principal_interest + 
+                extra_payment +
+                monthly_hoa+
+                monthly_maintenance
+            )
 
         balance -= total_principal
         cumulative_interest += interest_payment
