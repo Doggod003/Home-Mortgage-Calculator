@@ -86,9 +86,9 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
     # Amortization calculation
     amortization_rows = []
     balance = loan_amount
-month = 1
-cumulative_interest = 0
-cumulative_principal = 0
+    month = 1
+    cumulative_interest = 0
+    cumulative_principal = 0
 
 while balance > 0 and month <= 1200:
     interest_payment = balance * monthly_interest
