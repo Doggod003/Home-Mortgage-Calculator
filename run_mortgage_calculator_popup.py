@@ -19,9 +19,19 @@ def simulate_hoa_and_maintenance(months, base_hoa=100, base_maint=150, annual_in
 
     return hoa_list, maint_list
 
-
+payoff_months = len(df_monthly)
+years = payoff_months // 12
+months = payoff_months % 12
 if "history" not in st.session_state:
     st.session_state.history = []
+    st.session_state.history.append({
+        "Home Price": home_price,
+        "Loan Amount": loan_amount,
+        "Interest Rate": interest_rate,
+        "Monthly Payment": round(total_monthly_payment, 2),
+        "Years to Payoff": f"{years}y {months}m",
+        "Total Interest": round(df_monthly['Interest'].sum(), 2)
+    })
 
 
 st.set_page_config(page_title="Mortgage Calculator", layout="centered")
