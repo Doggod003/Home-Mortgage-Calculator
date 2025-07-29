@@ -84,17 +84,18 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
     )
 
     # Amortization calculation
+    amortization_rows = []
     amortization_rows.append({
-    'Month': month,
-    'Payment': round(total_payment + current_pmi, 2),
-    'Principal': round(total_principal, 2),
-    'Interest': round(interest_payment, 2),
-    'PMI': round(current_pmi, 2),
-    'HOA': round(monthly_hoa, 2),
-    'Maintenance': round(monthly_maintenance, 2),
-    'Cumulative Principal': round(cumulative_principal, 2),
-    'Cumulative Interest': round(cumulative_interest, 2),
-    'Balance': round(balance, 2)
+        'Month': month,
+        'Payment': round(total_payment + current_pmi, 2),
+        'Principal': round(total_principal, 2),
+        'Interest': round(interest_payment, 2),
+        'PMI': round(current_pmi, 2),
+        'HOA': round(monthly_hoa, 2),
+        'Maintenance': round(monthly_maintenance, 2),
+        'Cumulative Principal': round(cumulative_principal, 2),
+        'Cumulative Interest': round(cumulative_interest, 2),
+        'Balance': round(balance, 2)
 })
 
     while balance > 0 and month <= 1200:
