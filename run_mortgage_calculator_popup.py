@@ -215,13 +215,15 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
     # ----------------------------
     # Tabs
     # ----------------------------
-    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+    tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
         "📊 Monthly Breakdown",
         "💡 Affordability",
         "📋 Amortization",
         "📈 Charts",
+        "📊 Comparison",
         "💾 Export",
         "📂 Archive"
+        
     ])
 
     with tab1:
@@ -265,7 +267,36 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         st.subheader("🏠 HOA & Maintenance Over Time")
         st.line_chart(df_monthly.set_index("Month")[["HOA", "Maintenance"]])
 
+
     with tab5:
+        st.subheader("📊 Side-by-Side Loan Comparison")
+    
+        st.info("This section will allow you to compare two mortgage scenarios side by side.")
+    
+        st.markdown("""
+        **Coming Next:**
+        - Two parallel input panels for Loan A and Loan B
+        - Independent amortization for each
+        - Comparison table of monthly payment, interest, payoff time, DTI
+        - Optional: side-by-side charting
+        """)
+
+
+
+
+
+
+
+    
+    with tab6:
+        st.subheader("📂 Calculation History")
+        if st.session_state.history:
+            df_history = pd.DataFrame(st.session_state.history)
+            st.dataframe(df_history)
+        else:
+            st.info("No calculations saved yet.")
+
+    with tab7:
         csv = df_monthly.to_csv(index=False).encode('utf-8')
         st.download_button("Download CSV", data=csv, file_name="monthly_amortization.csv", mime="text/csv")
         pdf_data = {
@@ -288,7 +319,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
 
     pdf_path = generate_pdf_summary(pdf_data)
     
-    with tab5:
+    with tab7:
         with open(pdf_path, "rb") as file:
             st.download_button(
                 label="📄 Download PDF Report",
@@ -297,13 +328,9 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
                 mime="application/pdf"
             )
 
-    with tab6:
-        st.subheader("📂 Calculation History")
-        if st.session_state.history:
-            df_history = pd.DataFrame(st.session_state.history)
-            st.dataframe(df_history)
-        else:
-            st.info("No calculations saved yet.")
+
+
+
 
 else:
     st.warning("Please enter valid values for all fields to calculate your mortgage.")
