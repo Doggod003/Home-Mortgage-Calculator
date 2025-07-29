@@ -78,7 +78,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         monthly_principal_interest +
         monthly_property_tax +
         monthly_insurance +
-        initial_pmi_monthly
+        initial_pmi_monthly+
         monthly_hoa+
         monthly_maintenance
     )
