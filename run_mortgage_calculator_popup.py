@@ -125,6 +125,7 @@ while balance > 0 and month <= 1200:
         'Cumulative Interest': round(cumulative_interest, 2),
         'Balance': round(balance, 2)
 })
+    month += 1
 
     while balance > 0 and month <= 1200:
         interest_payment = balance * monthly_interest
