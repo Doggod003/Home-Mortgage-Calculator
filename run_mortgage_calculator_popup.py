@@ -1,6 +1,28 @@
 import streamlit as st
 import pandas as pd
 
+def simulate_hoa_and_maintenance(months, base_hoa=100, base_maint=150, annual_inflation=0.03):
+    hoa_list = []
+    maint_list = []
+    for m in range(months):
+        inflation_factor = (1 + annual_inflation) ** (m / 12)
+
+        hoa = base_hoa * inflation_factor
+        maintenance = base_maint * inflation_factor
+
+        # Simulate spikes every 5 or 10 years
+        if m % 60 == 0 and m != 0:
+            maintenance += 2000 * (0.75 + 0.5 * (m % 120 == 0))
+
+        hoa_list.append(round(hoa, 2))
+        maint_list.append(round(maintenance, 2))
+
+    return hoa_list, maint_list
+
+
+
+
+
 st.set_page_config(page_title="Mortgage Calculator", layout="centered")
 st.title("🏡 Mortgage Calculator with PMI, Affordability, and Payoff Modeling")
 
