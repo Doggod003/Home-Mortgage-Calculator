@@ -85,6 +85,34 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
 
     # Amortization calculation
     amortization_rows = []
+    balance = loan_amount
+month = 1
+cumulative_interest = 0
+cumulative_principal = 0
+
+while balance > 0 and month <= 1200:
+    interest_payment = balance * monthly_interest
+    principal_payment = monthly_principal_interest - interest_payment
+    extra_payment = (extra_payment_percent / 100) * monthly_income
+    total_principal = principal_payment + extra_payment
+
+    if total_principal > balance:
+        total_principal = balance
+        principal_payment = balance
+        total_payment = balance + interest_payment
+    else:
+        total_payment = monthly_principal_interest + extra_payment
+
+    balance -= total_principal
+    cumulative_interest += interest_payment
+    cumulative_principal += total_principal
+
+    # PMI drop-off logic
+    current_pmi = 0
+    if initial_pmi_monthly > 0:
+        equity_percent = (cumulative_principal + down_payment) / home_price * 100
+        if not pmi_drops_off or equity_percent < 20:
+            current_pmi = initial_pmi_monthly
     amortization_rows.append({
         'Month': month,
         'Payment': round(total_payment + current_pmi, 2),
