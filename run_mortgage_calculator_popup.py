@@ -20,7 +20,8 @@ def simulate_hoa_and_maintenance(months, base_hoa=100, base_maint=150, annual_in
     return hoa_list, maint_list
 
 
-
+if "history" not in st.session_state:
+    st.session_state.history = []
 
 
 st.set_page_config(page_title="Mortgage Calculator", layout="centered")
@@ -197,14 +198,25 @@ while balance > 0 and month <= 1200:
         month += 1
 
     df_monthly = pd.DataFrame(amortization_rows)
+    st.session_state.history.append({
+        "Home Price": home_price,
+        "Loan Amount": loan_amount,
+        "Interest Rate": interest_rate,
+        "Monthly Payment": round(total_monthly_payment, 2),
+        "Years to Payoff": f"{years}y {months}m",
+        "Total Interest": round(df_monthly['Interest'].sum(), 2)
+        })
+
+    
 
     # ✅ Tabbed Layout
-    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    tab1, tab2, tab3, tab4, tab5, tab6= st.tabs([
         "📊 Monthly Breakdown",
         "💡 Affordability",
         "📋 Amortization",
         "📈 Charts",
-        "💾 Export"
+        "💾 Export",
+        "📂 Archive"
     ])
 
     with tab1:
@@ -262,6 +274,14 @@ while balance > 0 and month <= 1200:
             file_name="monthly_amortization.csv",
             mime="text/csv"
         )
+    with tab6:
+        st.subheader("📂 Calculation History (this session)")
+
+        if st.session_state.history:
+            df_history = pd.DataFrame(st.session_state.history)
+            st.dataframe(df_history)
+        else:
+            st.info("No calculations saved yet.")
 
 else:
     st.warning("Please enter valid values for all fields to calculate your mortgage.")
