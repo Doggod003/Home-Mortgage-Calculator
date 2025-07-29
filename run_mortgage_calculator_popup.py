@@ -281,11 +281,60 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         - Optional: side-by-side charting
         """)
 
-
-
-
-
-
+    with tab5:
+        st.subheader("📊 Side-by-Side Loan Comparison")
+    
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("### 🅰️ Loan A")
+            home_price_a = st.number_input("Home Price (A)", value=300000, key="price_a")
+            down_payment_a = st.number_input("Down Payment (A)", value=60000, key="down_a")
+            interest_a = st.number_input("Interest Rate % (A)", value=6.5, key="rate_a")
+            term_a = st.selectbox("Term (A)", [15, 30], index=1, key="term_a")
+            income_a = st.number_input("Monthly Income (A)", value=6000, key="income_a")
+    
+        with col2:
+            st.markdown("### 🅱️ Loan B")
+            home_price_b = st.number_input("Home Price (B)", value=325000, key="price_b")
+            down_payment_b = st.number_input("Down Payment (B)", value=65000, key="down_b")
+            interest_b = st.number_input("Interest Rate % (B)", value=6.0, key="rate_b")
+            term_b = st.selectbox("Term (B)", [15, 30], index=1, key="term_b")
+            income_b = st.number_input("Monthly Income (B)", value=6000, key="income_b")
+    
+        def calc_mortgage(p, r, n):
+            r_month = r / 12 / 100
+            n_months = n * 12
+            return p / n_months if r_month == 0 else p * (r_month * (1 + r_month)**n_months) / ((1 + r_month)**n_months - 1)
+    
+        loan_amt_a = home_price_a - down_payment_a
+        loan_amt_b = home_price_b - down_payment_b
+    
+        monthly_a = calc_mortgage(loan_amt_a, interest_a, term_a)
+        monthly_b = calc_mortgage(loan_amt_b, interest_b, term_b)
+    
+        st.markdown("### 🔍 Loan Comparison Summary")
+        comparison = {
+            "Metric": [
+                "Home Price", "Loan Amount", "Interest Rate", "Term (years)",
+                "Monthly Payment", "DTI % (Monthly / Income)"
+            ],
+            "Loan A": [
+                f"${home_price_a:,.2f}", f"${loan_amt_a:,.2f}", f"{interest_a:.2f}%", f"{term_a}",
+                f"${monthly_a:,.2f}", f"{(monthly_a / income_a * 100):.2f}%"
+            ],
+            "Loan B": [
+                f"${home_price_b:,.2f}", f"${loan_amt_b:,.2f}", f"{interest_b:.2f}%", f"{term_b}",
+                f"${monthly_b:,.2f}", f"{(monthly_b / income_b * 100):.2f}%"
+            ]
+        }
+    
+        df_compare = pd.DataFrame(comparison)
+        st.dataframe(df_compare, use_container_width=True)
+    
+    
+    
+    
+    
 
     
     with tab6:
