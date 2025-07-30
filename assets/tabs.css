@@ -2,7 +2,7 @@
 div[data-baseweb="tab"] {
     background-color: #2c2f33 !important;
     color: white !important;
-    border-radius: 6px;
+    border-radius: 20px;
     padding: 8px 12px;
     margin-right: 4px;
 }
