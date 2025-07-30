@@ -72,3 +72,27 @@ div[data-baseweb="tab-panel"] {
   font-weight: 600;
   color: var(--text-color);
 }
+header[data-testid="stHeader"] {
+    background-color: #e0f2ff !important;
+    color: #003366 !important;
+    border-bottom: 1px solid #c4e3f3;
+    padding: 0.5rem 1rem;
+}
+
+/* Light blue footer */
+footer {
+    background-color: #e0f2ff !important;
+    color: #003366 !important;
+    border-top: 1px solid #c4e3f3;
+    padding: 0.5rem 1rem;
+}
+
+/* Optional: hide Streamlit's default footer message */
+footer:after {
+    content: "Powered by your Mortgage App 🏠";
+    display: block;
+    font-size: 0.85rem;
+    text-align: center;
+    padding-top: 0.25rem;
+    font-weight: 500;
+}
