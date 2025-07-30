@@ -2,6 +2,17 @@ from fpdf import FPDF
 import tempfile
 import streamlit as st
 import pandas as pd
+
+
+def load_local_css(assets/tabs.css):
+    with open(assets/tabs.css) as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+# Load the CSS at the beginning of the app
+load_local_css("assets/tabs.css")  # or "styles/tabs.css" if you used styles/
+
+
+
 class MortgagePDF(FPDF):
     def header(self):
         self.set_font("Arial", "B", 12)
