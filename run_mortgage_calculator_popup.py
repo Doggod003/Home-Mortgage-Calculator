@@ -228,7 +228,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
     # ----------------------------
     tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
         "📊 Payment",
-        "💡 Affordability",
+        "💡 Affordable?",
         "📋 Table",
         "📈 Charts",
         "📊 Compare",
