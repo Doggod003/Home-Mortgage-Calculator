@@ -280,13 +280,13 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         st.write(f"📉 Total interest paid: **${df_monthly['Interest'].sum():,.2f}**")
 
     with tab4:
-        st.subheader("📈 Balance Timeline")
+        st.markdown('<div class="chart-kpi"><h3>📈 Balance Timeline</h3></div>', unsafe_allow_html=True)
         st.line_chart(df_monthly.set_index("Month")[["Balance"]])
 
-        st.subheader("📊 Principal vs Interest Over Time")
-        st.line_chart(df_monthly.set_index("Month")[["Principal", "Interest"]])
+        st.markdown('<div class="chart-kpi"><h3>📊 Principal vs Interest Over Time</h3></div>', unsafe_allow_html=True)
+        st.line_chart(df_monthly.set_index("Month")[["Principal vs Intrest"]])
     
-        st.subheader("🏠 HOA & Maintenance Over Time")
+       st.markdown('<div class="chart-kpi"><h3>🏠 HOA & Maintenance Over Time</h3></div>', unsafe_allow_html=True)
         st.line_chart(df_monthly.set_index("Month")[["HOA", "Maintenance"]])
 
 
