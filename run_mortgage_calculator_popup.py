@@ -5,6 +5,7 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 
+st.set_page_config(page_title="Mortgage Calculator", layout="wide")
 
 def load_local_css(file_path):
     with open(file_path) as f:
