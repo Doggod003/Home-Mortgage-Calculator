@@ -42,3 +42,17 @@ div[data-baseweb="tab-panel"] {
     padding: 1rem;
     border-radius: 0 0 6px 6px;
 }
+.chart-kpi {
+  background-color: var(--secondary-background-color);
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 10px;
+  border-left: 6px solid #3399ff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.chart-kpi h3 {
+  margin: 0;
+  font-weight: 600;
+  color: var(--text-color);
+}
