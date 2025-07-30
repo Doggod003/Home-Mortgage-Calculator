@@ -18,3 +18,19 @@ button[data-baseweb="tab"][aria-selected="true"] {
     background-color: #4CAF50 !important;
     color: white !important;
 }
+/* Shrink tab button spacing */
+button[data-baseweb="tab"] {
+    padding: 4px 10px !important;
+    font-size: 0.85rem !important;
+    margin-right: 4px !important;
+}
+
+/* Reduce outer tab container spacing */
+.css-1n76uvr.e1tzin5v2 {
+    padding: 4px !important;
+}
+
+/* Optional: tighten container padding for the tab panel area */
+div[data-baseweb="tab-panel"] {
+    padding: 1rem !important;
+}
