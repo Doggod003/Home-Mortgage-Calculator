@@ -3,7 +3,6 @@ import tempfile
 import streamlit as st
 import pandas as pd
 
-from graph_components.kpi_charts import plot_balance_graph, plot_principal_vs_interest
 
 def load_local_css(file_path):
     with open(file_path) as f:
