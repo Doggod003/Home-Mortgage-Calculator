@@ -1,7 +1,9 @@
+#for people viewing this I put spacers in because I have horrible OCD and Im new to this
 from fpdf import FPDF
 import tempfile
 import streamlit as st
 import pandas as pd
+import plotly.graph_objects as go
 
 
 def load_local_css(file_path):
@@ -10,9 +12,7 @@ def load_local_css(file_path):
 
 # Load the CSS at the beginning of the app
 load_local_css("assets/tabs.css")  # or "styles/tabs.css" if you used styles/
-
-
-
+#---------------------------------------------------------------------------
 class MortgagePDF(FPDF):
     def header(self):
         self.set_font("Arial", "B", 12)
@@ -68,11 +68,9 @@ def generate_pdf_summary(summary_data):
     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".pdf")
     pdf.output(temp_file.name)
     return temp_file.name
-
-
-# ----------------------------
+# -----------------------------------------------------------------------------------------
 # Simulate HOA and Maintenance
-# ----------------------------
+# ------------------------------------------------------------------------------------------
 def simulate_hoa_and_maintenance(months, base_hoa=100, base_maint=150, annual_inflation=0.03):
     hoa_list = []
     maint_list = []
@@ -91,16 +89,17 @@ def simulate_hoa_and_maintenance(months, base_hoa=100, base_maint=150, annual_in
 
     return hoa_list, maint_list
 
-# ----------------------------
+# ----------------------------------------------------------------------------------------
 # Streamlit UI
-# ----------------------------
+# -----------------------------------------------------------------------------------------
 st.set_page_config(page_title="Mortgage Calculator", layout="centered")
 st.title("🏡 Mortgage Calculator")
 
 if "history" not in st.session_state:
     st.session_state.history = []
-
-# Sidebar Inputs
+#------------------------------------------------------------------------------------------
+# Sidebar Inputs 
+#------------------------------------------------------------------------------------------
 st.sidebar.header("Loan Setup")
 home_price = st.sidebar.number_input("Home Price ($)", min_value=10000, value=300000, step=1000)
 loan_type = st.sidebar.selectbox("Loan Type Preset", ["Conventional (20%)", "FHA (3.5%)", "VA (0%)", "Custom"])
@@ -281,13 +280,33 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
 
     with tab4:
         st.markdown('<div class="chart-kpi"><h3>📈 Balance Timeline</h3></div>', unsafe_allow_html=True)
-        st.line_chart(df_monthly.set_index("Month")[["Balance"]])
-
-        st.markdown('<div class="chart-kpi"><h3>📊 Principal vs Interest Over Time</h3></div>', unsafe_allow_html=True)
-        st.line_chart(df_monthly.set_index("Month")[["Principal", "Interest"]])
+        fig1 = go.Figure()
+        fig1.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["Balance"], mode='lines+markers', name='Balance', line=dict(color='blue')))
+        fig1.update_layout(
+            xaxis_title="Month", yaxis_title="Balance ($)", template="plotly_white",
+            legend=dict(x=1.05, y=1), margin=dict(r=120)
+        )
+        st.plotly_chart(fig1, use_container_width=True)
+    
+        st.markdown('<div class="chart-kpi"><h3>📊 Principal vs Interest</h3></div>', unsafe_allow_html=True)
+        fig2 = go.Figure()
+        fig2.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["Principal"], mode='lines+markers', name='Principal', line=dict(color='green')))
+        fig2.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["Interest"], mode='lines+markers', name='Interest', line=dict(color='red')))
+        fig2.update_layout(
+            xaxis_title="Month", yaxis_title="Amount ($)", template="plotly_white",
+            legend=dict(x=1.05, y=1), margin=dict(r=120)
+        )
+        st.plotly_chart(fig2, use_container_width=True)
     
         st.markdown('<div class="chart-kpi"><h3>🏠 HOA & Maintenance Over Time</h3></div>', unsafe_allow_html=True)
-        st.line_chart(df_monthly.set_index("Month")[["HOA", "Maintenance"]])
+        fig3 = go.Figure()
+        fig3.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["HOA"], mode='lines+markers', name='HOA', line=dict(color='purple')))
+        fig3.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["Maintenance"], mode='lines+markers', name='Maintenance', line=dict(color='orange')))
+        fig3.update_layout(
+            xaxis_title="Month", yaxis_title="Monthly Cost ($)", template="plotly_white",
+            legend=dict(x=1.05, y=1), margin=dict(r=120)
+        )
+        st.plotly_chart(fig3, use_container_width=True)
 
 
     with tab5:
