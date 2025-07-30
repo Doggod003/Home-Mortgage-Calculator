@@ -272,7 +272,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         st.line_chart(df_monthly.set_index("Month")[["DTI %"]])
 
     with tab3:
-       st.markdown('<div class="chart-kpi"><h3>📋 Monthly Amortization Schedule</h3></div>', unsafe_allow_html=True)
+        st.markdown('<div class="chart-kpi"><h3>📋 Monthly Amortization Schedule</h3></div>', unsafe_allow_html=True)
         st.dataframe(df_monthly.head(360))
         st.success(f"🏁 Paid off in {years} years and {months} months.")
         st.write(f"💸 Total paid: **${df_monthly['Payment'].sum():,.2f}**")
