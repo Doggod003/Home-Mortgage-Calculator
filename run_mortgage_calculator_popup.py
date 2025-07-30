@@ -281,9 +281,9 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
 
     with tab4:
         st.subheader("📈 Balance Timeline")
-        st.line_chart(df_monthly.set_index("Month")[["Balance"]])
+        plot_balance_graph(df_monthly)
         st.subheader("📊 Principal vs Interest Over Time")
-        st.line_chart(df_monthly.set_index("Month")[["Principal", "Interest", "PMI"]])
+        plot_principal_vs_interest(df_monthly)
         st.subheader("🏠 HOA & Maintenance Over Time")
         st.line_chart(df_monthly.set_index("Month")[["HOA", "Maintenance"]])
 
