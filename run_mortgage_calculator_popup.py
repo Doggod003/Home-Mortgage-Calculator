@@ -244,9 +244,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         col1.metric("Monthly Payment", f"${total_monthly_payment:,.0f}")
         col2.metric("Time to Payoff", f"{years}y {months}m")
         col3.metric("Total Interest", f"${df_monthly['Interest'].sum():,.0f}")
-        col4, col5 = st.columns(2)
-        col4.metric("Loan Amount", f"${loan_amount:,.0f}")
-        col5.metric("Down Payment %", f"{down_payment_percent:.1f}%")
+       
 
 
 
