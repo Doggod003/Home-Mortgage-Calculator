@@ -1,36 +1,44 @@
-/* assets/tabs.css */
-/* Make the tabs container darker */
+/* Tab container background */
 .css-1n76uvr.e1tzin5v2 {
-    background-color: #2c2f33 !important;
-    border-radius: 8px;
-    padding: 8px;
+    background-color: #2c2f33 !important;  /* dark slate */
+    padding: 6px !important;
+    border-radius: 6px;
 }
 
-/* Style individual tab buttons */
+/* Tab buttons */
 button[data-baseweb="tab"] {
     background-color: #2c2f33 !important;
-    color: white !important;
-    border-radius: 6px !important;
-    margin-right: 6px;
-}
-
-button[data-baseweb="tab"][aria-selected="true"] {
-    background-color: #4CAF50 !important;
-    color: white !important;
-}
-/* Shrink tab button spacing */
-button[data-baseweb="tab"] {
-    padding: 4px 10px !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-right: 1px solid #d0d0d0 !important;  /* clean divider */
+    margin-right: 1px !important;
+    padding: 5px 12px !important;
     font-size: 0.85rem !important;
-    margin-right: 4px !important;
+    border-radius: 6px 6px 0 0 !important;
+    transition: background-color 0.3s ease;
 }
 
-/* Reduce outer tab container spacing */
-.css-1n76uvr.e1tzin5v2 {
-    padding: 4px !important;
+/* Active tab */
+button[data-baseweb="tab"][aria-selected="true"] {
+    background-color: #4CAF50 !important;  /* green highlight */
+    color: white !important;
+    font-weight: bold;
 }
 
-/* Optional: tighten container padding for the tab panel area */
+/* Last tab has no right border */
+button[data-baseweb="tab"]:last-child {
+    border-right: none !important;
+}
+
+/* Hover state */
+button[data-baseweb="tab"]:hover {
+    background-color: #3a3d41 !important;
+    cursor: pointer;
+}
+
+/* Tab panel content area */
 div[data-baseweb="tab-panel"] {
-    padding: 1rem !important;
+    background-color: #ffffff !important;
+    padding: 1rem;
+    border-radius: 0 0 6px 6px;
 }
