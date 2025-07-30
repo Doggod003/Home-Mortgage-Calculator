@@ -238,7 +238,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
     ])
 
     with tab1:
-        st.subheader("📊 Monthly Payment Breakdown")
+        st.markdown('<div class="chart-kpi"><h3>📊 Monthly Payment Breakdown</h3></div>', unsafe_allow_html=True)
         st.write(f"**Loan Amount:** ${loan_amount:,.2f}")
         st.write(f"**Principal & Interest:** ${monthly_principal_interest:,.2f}")
         st.write(f"**Property Tax:** ${monthly_property_tax:,.2f}")
