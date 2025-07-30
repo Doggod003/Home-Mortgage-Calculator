@@ -286,7 +286,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         st.markdown('<div class="chart-kpi"><h3>📊 Principal vs Interest Over Time</h3></div>', unsafe_allow_html=True)
         st.line_chart(df_monthly.set_index("Month")[["Principal vs Intrest"]])
     
-       st.markdown('<div class="chart-kpi"><h3>🏠 HOA & Maintenance Over Time</h3></div>', unsafe_allow_html=True)
+        st.markdown('<div class="chart-kpi"><h3>🏠 HOA & Maintenance Over Time</h3></div>', unsafe_allow_html=True)
         st.line_chart(df_monthly.set_index("Month")[["HOA", "Maintenance"]])
 
 
