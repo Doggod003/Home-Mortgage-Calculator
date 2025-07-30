@@ -1,16 +1,51 @@
-/* Tab container background */
+/* ---------------------------
+   GLOBAL STYLES & BACKGROUND
+---------------------------- */
+body, .stApp {
+    background-color: #f5f5f5 !important;  /* darker white */
+    color: #1a1a1a;
+}
+
+/* ---------------------------
+   HEADER + FOOTER
+---------------------------- */
+header[data-testid="stHeader"] {
+    background-color: #e0f2ff !important;
+    color: #003366 !important;
+    border-bottom: 1px solid #c4e3f3;
+    padding: 0.5rem 1rem;
+}
+
+footer {
+    background-color: #e0f2ff !important;
+    color: #003366 !important;
+    border-top: 1px solid #c4e3f3;
+    padding: 0.5rem 1rem;
+}
+
+footer:after {
+    content: "Powered by your Mortgage App 🏠";
+    display: block;
+    font-size: 0.85rem;
+    text-align: center;
+    padding-top: 0.25rem;
+    font-weight: 500;
+}
+
+/* ---------------------------
+   TABS & PANELS
+---------------------------- */
 .css-1n76uvr.e1tzin5v2 {
-    background-color: #2c2f33 !important;  /* dark slate */
+    background-color: #2c2f33 !important;
     padding: 6px !important;
     border-radius: 6px;
 }
 
-/* Tab buttons */
 button[data-baseweb="tab"] {
     background-color: #2c2f33 !important;
     color: #ffffff !important;
     border: none !important;
-    border-right: 1px solid #d0d0d0 !important;  /* clean divider */
+    border-right: 1px solid #d0d0d0 !important;
     margin-right: 1px !important;
     padding: 5px 12px !important;
     font-size: 0.85rem !important;
@@ -18,47 +53,32 @@ button[data-baseweb="tab"] {
     transition: background-color 0.3s ease;
 }
 
-/* Active tab */
 button[data-baseweb="tab"][aria-selected="true"] {
-    background-color: #4CAF50 !important;  /* green highlight */
+    background-color: #4CAF50 !important;
     color: white !important;
     font-weight: bold;
 }
 
-/* Last tab has no right border */
 button[data-baseweb="tab"]:last-child {
     border-right: none !important;
 }
 
-/* Hover state */
 button[data-baseweb="tab"]:hover {
     background-color: #3a3d41 !important;
     cursor: pointer;
 }
 
-/* Tab panel content area */
 div[data-baseweb="tab-panel"] {
     background-color: #ffffff !important;
     padding: 1rem;
     border-radius: 0 0 6px 6px;
 }
-.chart-kpi {
-  background-color: var(--secondary-background-color);
-  padding: 0.75rem 1rem;
-  margin-bottom: 0.5rem;
-  border-radius: 10px;
-  border-left: 6px solid #3399ff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
 
-.chart-kpi h3 {
-  margin: 0;
-  font-weight: 600;
-  color: var(--text-color);
-}
-
+/* ---------------------------
+   KPI HEADERS
+---------------------------- */
 .chart-kpi {
-  background-color: var(--secondary-background-color);
+  background-color: var(--secondary-background-color, #ffffff);
   padding: 0.75rem 1rem;
   margin-bottom: 0.75rem;
   border-radius: 10px;
@@ -70,29 +90,5 @@ div[data-baseweb="tab-panel"] {
   margin: 0;
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--text-color);
-}
-header[data-testid="stHeader"] {
-    background-color: #e0f2ff !important;
-    color: #003366 !important;
-    border-bottom: 1px solid #c4e3f3;
-    padding: 0.5rem 1rem;
-}
-
-/* Light blue footer */
-footer {
-    background-color: #e0f2ff !important;
-    color: #003366 !important;
-    border-top: 1px solid #c4e3f3;
-    padding: 0.5rem 1rem;
-}
-
-/* Optional: hide Streamlit's default footer message */
-footer:after {
-    content: "Powered by your Mortgage App 🏠";
-    display: block;
-    font-size: 0.85rem;
-    text-align: center;
-    padding-top: 0.25rem;
-    font-weight: 500;
+  color: var(--text-color, #1a1a1a);
 }
