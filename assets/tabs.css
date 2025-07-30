@@ -111,3 +111,12 @@ div[data-baseweb="tab-panel"] {
   font-weight: 600;
   color: var(--text-color, #1a1a1a);
 }
+div[data-baseweb="tab-panel"] {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0%   { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
