@@ -259,7 +259,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
 
 
     with tab2:
-        st.subheader("💡 Affordability Check")
+        st.markdown('<div class="chart-kpi"><h3>💡 Affordability Check</h3></div>', unsafe_allow_html=True)
         payment_to_income = (total_monthly_payment / monthly_income) * 100
         st.write(f"Your mortgage payment is **{payment_to_income:.2f}%** of your monthly income.")
         if payment_to_income > 36:
@@ -272,7 +272,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         st.line_chart(df_monthly.set_index("Month")[["DTI %"]])
 
     with tab3:
-        st.subheader("📋 Monthly Amortization Schedule")
+       st.markdown('<div class="chart-kpi"><h3>📋 Monthly Amortization Schedule</h3></div>', unsafe_allow_html=True)
         st.dataframe(df_monthly.head(360))
         st.success(f"🏁 Paid off in {years} years and {months} months.")
         st.write(f"💸 Total paid: **${df_monthly['Payment'].sum():,.2f}**")
@@ -310,8 +310,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
 
 
     with tab5:
-        st.subheader("📊 Side-by-Side Loan Comparison")
-    
+        st.markdown('<div class="chart-kpi"><h3>📊 Side-by-Side Loan Comparison</h3></div>', unsafe_allow_html=True)
         st.info("This section will allow you to compare two mortgage scenarios side by side.")
     
         st.markdown("""
@@ -323,8 +322,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         """)
 
     with tab5:
-        st.subheader("📊 Side-by-Side Loan Comparison")
-    
+        st.markdown('<div class="chart-kpi"><h3>📊 Side-by-Side Loan Comparison</h3></div>', unsafe_allow_html=True)
         col1, col2 = st.columns(2)
         with col1:
             st.markdown("### 🅰️ Loan A")
@@ -379,7 +377,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
 
     
     with tab6:
-        st.subheader("📂 Calculation History")
+        st.markdown('<div class="chart-kpi"><h3>📂 Calculation History</h3></div>', unsafe_allow_html=True)
         if st.session_state.history:
             df_history = pd.DataFrame(st.session_state.history)
             st.dataframe(df_history)
