@@ -493,9 +493,10 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
                 AgGrid(
                     df_history,
                     gridOptions=grid_options,
-                    height=300,
-                    theme="streamlit",  # Other themes: "alpine", "balham", "material"
-                    enable_enterprise_modules=False
+                    height=400,  # or try None to let autoHeight do its thing
+                    theme="streamlit",
+                    enable_enterprise_modules=False,
+                    fit_columns_on_grid_load=True
                 )
             else:
                 st.info("No calculations saved yet.")
