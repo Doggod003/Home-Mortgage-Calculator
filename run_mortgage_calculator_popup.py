@@ -333,7 +333,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         st.markdown('<div class="chart-kpi"><h3>📊 Side-by-Side Loan Comparison</h3></div>', unsafe_allow_html=True)
         col1, col2 = st.columns(2)
         with col1:
-            st.markdown("### 🅰️ Loan A", expanded=True)
+            st.markdown("### 🅰️ Loan A")
             with st.expander("🅰️ Loan A Inputs"):
                 home_price_a = st.number_input("Home Price (A)", value=300000, key="price_a")
                 down_payment_a = st.number_input("Down Payment (A)", value=60000, key="down_a")
@@ -343,7 +343,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         
         with col2:
             st.markdown("### 🅱️ Loan B")
-            with st.expander("🅱️ Loan B Inputs", expanded=True):    
+            with st.expander("🅱️ Loan B Inputs"):    
                 home_price_b = st.number_input("Home Price (B)", value=325000, key="price_b")
                 down_payment_b = st.number_input("Down Payment (B)", value=65000, key="down_b")
                 interest_b = st.number_input("Interest Rate % (B)", value=6.0, key="rate_b")
