@@ -275,7 +275,24 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
             else:
                 st.success("✅ Affordable based on income.")
             df_monthly["DTI %"] = (df_monthly["Payment"] / monthly_income) * 100
-            st.line_chart(df_monthly.set_index("Month")[["DTI %"]])
+            fig_dti = go.Figure()
+            fig_dti.add_trace(go.Scatter(
+                x=df_monthly["Month"],
+                y=df_monthly["DTI %"],
+                mode='lines+markers',
+                name='DTI %',
+                line=dict(color='darkblue')
+            ))
+            fig_dti.update_layout(
+                title="DTI Over Time",
+                xaxis_title="Month",
+                yaxis_title="DTI (%)",
+                template="plotly_white",
+                legend=dict(x=1.05, y=1),
+                margin=dict(r=80)
+            )
+            
+            st.plotly_chart(fig_dti, use_container_width=True)            
             st.markdown('</div>', unsafe_allow_html=True)
 
     with tab3:
