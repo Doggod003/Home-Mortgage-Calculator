@@ -490,13 +490,53 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
     
                 grid_options = gb.build()
     
-                AgGrid(
+                grid_response = AgGrid(
                     df_history,
                     gridOptions=grid_options,
-                    height=400,  # or try None to let autoHeight do its thing
+                    height=400,
                     theme="streamlit",
-                    enable_enterprise_modules=False,
-                    fit_columns_on_grid_load=True
+                    fit_columns_on_grid_load=True,
+                    update_mode=GridUpdateMode.SELECTION_CHANGED
+             if selected:
+                    selected_data = selected[0]
+    
+                    pdf_data = {
+                        "Home Price": selected_data.get("Home Price"),
+                        "Loan Amount": selected_data.get("Loan Amount"),
+                        "Interest Rate": selected_data.get("Interest Rate"),
+                        "Loan Term": selected_data.get("Loan Term"),
+                        "P&I": selected_data.get("P&I"),
+                        "Tax": selected_data.get("Tax"),
+                        "Insurance": selected_data.get("Insurance"),
+                        "PMI": selected_data.get("PMI"),
+                        "HOA": selected_data.get("HOA"),
+                        "Maintenance": selected_data.get("Maintenance"),
+                        "Total Payment": selected_data.get("Total Payment"),
+                        "DTI": selected_data.get("DTI"),
+                        "Payoff Time": selected_data.get("Payoff Time"),
+                        "Total Paid": selected_data.get("Total Paid"),
+                        "Total Interest": selected_data.get("Total Interest"),
+                    }
+
+                from fpdf import FPDF
+                pdf = FPDF()
+                pdf.add_page()
+                pdf.set_font("Arial", size=12)
+                pdf.cell(200, 10, txt="🏡 Mortgage Report", ln=True, align="C")
+
+                for key, value in pdf_data.items():
+                    pdf.cell(200, 10, txt=f"{key}: {value}", ln=True)
+
+                pdf_output = "/tmp/mortgage_report.pdf"
+                pdf.output(pdf_output)
+
+                with open(pdf_output, "rb") as f:
+                    st.download_button(
+                        label="📥 Download Selected Report as PDF",
+                        data=f,
+                        file_name="mortgage_report.pdf",
+                        mime="application/pdf"
+                    )
                 )
             else:
                 st.info("No calculations saved yet.")
