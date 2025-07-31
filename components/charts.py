@@ -1,7 +1,7 @@
 import streamlit as st
 import plotly.graph_objects as go
 
-def draw_balance_chart(filtered_df):
+def draw_balance_chart(filtered_df, key_suffix=""):
     fig = go.Figure()
     fig.add_trace(go.Scatter(
         x=filtered_df["Month"],
@@ -17,4 +17,4 @@ def draw_balance_chart(filtered_df):
         legend=dict(x=1.05, y=1),
         margin=dict(r=120)
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key=f"balance_chart_{key_suffix}")
