@@ -538,8 +538,8 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
                         file_name="mortgage_report.pdf",
                         mime="application/pdf"
                     )
-        else:
-            st.info("No calculations saved yet.")
+            else:
+                st.info("No calculations saved yet.")
 
     with tab7:
         csv = df_monthly.to_csv(index=False).encode('utf-8')
