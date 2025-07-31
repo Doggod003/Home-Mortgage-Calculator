@@ -573,5 +573,5 @@ with tab6:
                 mime="application/pdf"
             )
 
-    else:
-        st.warning("Please enter valid values for all fields to calculate your mortgage.")
+        else:
+            st.warning("Please enter valid values for all fields to calculate your mortgage.")
