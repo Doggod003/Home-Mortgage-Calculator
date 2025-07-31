@@ -291,7 +291,9 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
     with tab4: #TAB 4
         st.markdown('<div class="chart-kpi"><h3>📈 Balance Timeline</h3></div>', unsafe_allow_html=True)
         with st.expander("📉 Balance Over Time", expanded=True):
-            st.markdown('<div class="chart-wrapper">', unsafe_allow_html=True) # 🟦 Begin chart border box  
+        with st.container():
+            st.markdown('<div class="chart-wrapper">', unsafe_allow_html=True)
+    
             fig1 = go.Figure()
             fig1.add_trace(go.Scatter(
                 x=df_monthly["Month"], 
@@ -307,36 +309,73 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
                 legend=dict(x=1.05, y=1), 
                 margin=dict(r=120)
             )
+    
             st.plotly_chart(fig1, use_container_width=True)
-            st.markdown('</div>', unsafe_allow_html=True)    # 🟦 End chart border box
-        #----
-        #P&I
-        #----
-        st.markdown('<div class="chart-kpi"><h3>📊 Principal vs Interest</h3></div>', unsafe_allow_html=True)
-        with st.expander("📊 Principal vs Interest", expanded=True):    
-            fig2 = go.Figure()
-            fig2.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["Principal"], mode='lines+markers', name='Principal', line=dict(color='green')))
-            fig2.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["Interest"], mode='lines+markers', name='Interest', line=dict(color='red')))
-            fig2.update_layout(
-                xaxis_title="Month", yaxis_title="Amount ($)", template="plotly_white",
-                legend=dict(x=1.05, y=1), margin=dict(r=120)
+            st.markdown('</div>', unsafe_allow_html=True)
+
+# Principal vs Interest
+    st.markdown('<div class="chart-kpi"><h3>📊 Principal vs Interest</h3></div>', unsafe_allow_html=True)
+    with st.expander("📊 Principal vs Interest", expanded=True):
+    with st.container():
+        st.markdown('<div class="chart-wrapper">', unsafe_allow_html=True)
+
+        fig2 = go.Figure()
+        fig2.add_trace(go.Scatter(
+            x=df_monthly["Month"], 
+            y=df_monthly["Principal"], 
+            mode='lines+markers', 
+            name='Principal', 
+            line=dict(color='green')
+        ))
+        fig2.add_trace(go.Scatter(
+            x=df_monthly["Month"], 
+            y=df_monthly["Interest"], 
+            mode='lines+markers', 
+            name='Interest', 
+            line=dict(color='red')
+        ))
+        fig2.update_layout(
+            xaxis_title="Month", 
+            yaxis_title="Amount ($)", 
+            template="plotly_white",
+            legend=dict(x=1.05, y=1), 
+            margin=dict(r=120)
         )
+
         st.plotly_chart(fig2, use_container_width=True)
-        #-----
-        #HOA & MAINT
-        #-----
-        st.markdown('<div class="chart-kpi"><h3>🏠 HOA & Maintenance Over Time</h3></div>', unsafe_allow_html=True)
-        with st.expander("🏠 HOA & Maintenance", expanded=True):
-            fig3 = go.Figure()
-            fig3.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["HOA"], mode='lines+markers', name='HOA', line=dict(color='purple')))
-            fig3.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["Maintenance"], mode='lines+markers', name='Maintenance', line=dict(color='orange')))
-            fig3.update_layout(
-                xaxis_title="Month", yaxis_title="Monthly Cost ($)", template="plotly_white",
-                legend=dict(x=1.05, y=1), margin=dict(r=120)
-            )
-        st.plotly_chart(fig3, use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
+# HOA & Maintenance
+    st.markdown('<div class="chart-kpi"><h3>🏠 HOA & Maintenance Over Time</h3></div>', unsafe_allow_html=True)
+    with st.expander("🏠 HOA & Maintenance", expanded=True):
+    with st.container():
+        st.markdown('<div class="chart-wrapper">', unsafe_allow_html=True)
+
+        fig3 = go.Figure()
+        fig3.add_trace(go.Scatter(
+            x=df_monthly["Month"], 
+            y=df_monthly["HOA"], 
+            mode='lines+markers', 
+            name='HOA', 
+            line=dict(color='purple')
+        ))
+        fig3.add_trace(go.Scatter(
+            x=df_monthly["Month"], 
+            y=df_monthly["Maintenance"], 
+            mode='lines+markers', 
+            name='Maintenance', 
+            line=dict(color='orange')
+        ))
+        fig3.update_layout(
+            xaxis_title="Month", 
+            yaxis_title="Monthly Cost ($)", 
+            template="plotly_white",
+            legend=dict(x=1.05, y=1), 
+            margin=dict(r=120)
+        )
+
+        st.plotly_chart(fig3, use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
     with tab5:
         st.markdown('<div class="chart-kpi"><h3>📊 Side-by-Side Loan Comparison</h3></div>', unsafe_allow_html=True)
