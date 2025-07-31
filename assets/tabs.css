@@ -138,3 +138,10 @@ div[data-baseweb="tab-panel"] {
     margin-bottom: 24px;
     background-color: #ffffff;
 }
+.chart-wrapper {
+    border: 2px solid #2c91f0;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #ffffff;
+}
