@@ -262,52 +262,58 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
 
     with tab2:
         st.markdown('<div class="chart-kpi"><h3>💡 Affordability Check</h3></div>', unsafe_allow_html=True)
-        payment_to_income = (total_monthly_payment / monthly_income) * 100
-        st.write(f"Your mortgage payment is **{payment_to_income:.2f}%** of your monthly income.")
-        if payment_to_income > 36:
-            st.error("🚨 Exceeds 36% — risky debt-to-income ratio.")
-        elif payment_to_income > 28:
-            st.warning("⚠️ Above 28% — higher than recommended for housing.")
-        else:
-            st.success("✅ Affordable based on income.")
-        df_monthly["DTI %"] = (df_monthly["Payment"] / monthly_income) * 100
-        st.line_chart(df_monthly.set_index("Month")[["DTI %"]])
+        with st.expander("📈 Debt-to-Income (DTI) Analysis"):
+            payment_to_income = (total_monthly_payment / monthly_income) * 100
+            st.write(f"Your mortgage payment is **{payment_to_income:.2f}%** of your monthly income.")
+            if payment_to_income > 36:
+                st.error("🚨 Exceeds 36% — risky debt-to-income ratio.")
+            elif payment_to_income > 28:
+                st.warning("⚠️ Above 28% — higher than recommended for housing.")
+            else:
+                st.success("✅ Affordable based on income.")
+            df_monthly["DTI %"] = (df_monthly["Payment"] / monthly_income) * 100
+            st.line_chart(df_monthly.set_index("Month")[["DTI %"]])
 
     with tab3:
         st.markdown('<div class="chart-kpi"><h3>📋 Monthly Amortization Schedule</h3></div>', unsafe_allow_html=True)
-        st.dataframe(df_monthly.head(360))
-        st.success(f"🏁 Paid off in {years} years and {months} months.")
-        st.write(f"💸 Total paid: **${df_monthly['Payment'].sum():,.2f}**")
-        st.write(f"📉 Total interest paid: **${df_monthly['Interest'].sum():,.2f}**")
+        with st.expander("📅 Amortization Table"):
+            st.dataframe(df_monthly.head(360))
+        with st.expander("📌 Summary & Totals"):
+            st.success(f"🏁 Paid off in {years} years and {months} months.")
+            st.write(f"💸 Total paid: **${df_monthly['Payment'].sum():,.2f}**")
+            st.write(f"📉 Total interest paid: **${df_monthly['Interest'].sum():,.2f}**")
 
     with tab4:
         st.markdown('<div class="chart-kpi"><h3>📈 Balance Timeline</h3></div>', unsafe_allow_html=True)
-        fig1 = go.Figure()
-        fig1.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["Balance"], mode='lines+markers', name='Balance', line=dict(color='blue')))
-        fig1.update_layout(
-            xaxis_title="Month", yaxis_title="Balance ($)", template="plotly_white",
-            legend=dict(x=1.05, y=1), margin=dict(r=120)
+        with st.expander("📉 Balance Over Time"):
+            fig1 = go.Figure()
+            fig1.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["Balance"], mode='lines+markers', name='Balance', line=dict(color='blue')))
+            fig1.update_layout(
+                xaxis_title="Month", yaxis_title="Balance ($)", template="plotly_white",
+                legend=dict(x=1.05, y=1), margin=dict(r=120)
         )
         st.plotly_chart(fig1, use_container_width=True)
     
         st.markdown('<div class="chart-kpi"><h3>📊 Principal vs Interest</h3></div>', unsafe_allow_html=True)
-        fig2 = go.Figure()
-        fig2.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["Principal"], mode='lines+markers', name='Principal', line=dict(color='green')))
-        fig2.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["Interest"], mode='lines+markers', name='Interest', line=dict(color='red')))
-        fig2.update_layout(
-            xaxis_title="Month", yaxis_title="Amount ($)", template="plotly_white",
-            legend=dict(x=1.05, y=1), margin=dict(r=120)
+        with st.expander("📊 Principal vs Interest"):    
+            fig2 = go.Figure()
+            fig2.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["Principal"], mode='lines+markers', name='Principal', line=dict(color='green')))
+            fig2.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["Interest"], mode='lines+markers', name='Interest', line=dict(color='red')))
+            fig2.update_layout(
+                xaxis_title="Month", yaxis_title="Amount ($)", template="plotly_white",
+                legend=dict(x=1.05, y=1), margin=dict(r=120)
         )
         st.plotly_chart(fig2, use_container_width=True)
     
         st.markdown('<div class="chart-kpi"><h3>🏠 HOA & Maintenance Over Time</h3></div>', unsafe_allow_html=True)
-        fig3 = go.Figure()
-        fig3.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["HOA"], mode='lines+markers', name='HOA', line=dict(color='purple')))
-        fig3.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["Maintenance"], mode='lines+markers', name='Maintenance', line=dict(color='orange')))
-        fig3.update_layout(
-            xaxis_title="Month", yaxis_title="Monthly Cost ($)", template="plotly_white",
-            legend=dict(x=1.05, y=1), margin=dict(r=120)
-        )
+        with st.expander("🏠 HOA & Maintenance"):
+            fig3 = go.Figure()
+            fig3.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["HOA"], mode='lines+markers', name='HOA', line=dict(color='purple')))
+            fig3.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["Maintenance"], mode='lines+markers', name='Maintenance', line=dict(color='orange')))
+            fig3.update_layout(
+                xaxis_title="Month", yaxis_title="Monthly Cost ($)", template="plotly_white",
+                legend=dict(x=1.05, y=1), margin=dict(r=120)
+            )
         st.plotly_chart(fig3, use_container_width=True)
 
 
@@ -328,20 +334,22 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         col1, col2 = st.columns(2)
         with col1:
             st.markdown("### 🅰️ Loan A")
-            home_price_a = st.number_input("Home Price (A)", value=300000, key="price_a")
-            down_payment_a = st.number_input("Down Payment (A)", value=60000, key="down_a")
-            interest_a = st.number_input("Interest Rate % (A)", value=6.5, key="rate_a")
-            term_a = st.selectbox("Term (A)", [15, 30], index=1, key="term_a")
-            income_a = st.number_input("Monthly Income (A)", value=6000, key="income_a")
-    
+            with st.expander("🅰️ Loan A Inputs"):
+                home_price_a = st.number_input("Home Price (A)", value=300000, key="price_a")
+                down_payment_a = st.number_input("Down Payment (A)", value=60000, key="down_a")
+                interest_a = st.number_input("Interest Rate % (A)", value=6.5, key="rate_a")
+                term_a = st.selectbox("Term (A)", [15, 30], index=1, key="term_a")
+                income_a = st.number_input("Monthly Income (A)", value=6000, key="income_a")
+        
         with col2:
             st.markdown("### 🅱️ Loan B")
-            home_price_b = st.number_input("Home Price (B)", value=325000, key="price_b")
-            down_payment_b = st.number_input("Down Payment (B)", value=65000, key="down_b")
-            interest_b = st.number_input("Interest Rate % (B)", value=6.0, key="rate_b")
-            term_b = st.selectbox("Term (B)", [15, 30], index=1, key="term_b")
-            income_b = st.number_input("Monthly Income (B)", value=6000, key="income_b")
-    
+            with st.expander("🅱️ Loan B Inputs"):    
+                home_price_b = st.number_input("Home Price (B)", value=325000, key="price_b")
+                down_payment_b = st.number_input("Down Payment (B)", value=65000, key="down_b")
+                interest_b = st.number_input("Interest Rate % (B)", value=6.0, key="rate_b")
+                term_b = st.selectbox("Term (B)", [15, 30], index=1, key="term_b")
+                income_b = st.number_input("Monthly Income (B)", value=6000, key="income_b")
+        
         def calc_mortgage(p, r, n):
             r_month = r / 12 / 100
             n_months = n * 12
@@ -354,23 +362,24 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         monthly_b = calc_mortgage(loan_amt_b, interest_b, term_b)
     
         st.markdown("### 🔍 Loan Comparison Summary")
-        comparison = {
-            "Metric": [
-                "Home Price", "Loan Amount", "Interest Rate", "Term (years)",
-                "Monthly Payment", "DTI % (Monthly / Income)"
-            ],
-            "Loan A": [
-                f"${home_price_a:,.2f}", f"${loan_amt_a:,.2f}", f"{interest_a:.2f}%", f"{term_a}",
-                f"${monthly_a:,.2f}", f"{(monthly_a / income_a * 100):.2f}%"
-            ],
-            "Loan B": [
-                f"${home_price_b:,.2f}", f"${loan_amt_b:,.2f}", f"{interest_b:.2f}%", f"{term_b}",
-                f"${monthly_b:,.2f}", f"{(monthly_b / income_b * 100):.2f}%"
-            ]
-        }
-    
-        df_compare = pd.DataFrame(comparison)
-        st.dataframe(df_compare, use_container_width=True)
+        with st.expander("📊 Comparison Summary"):    
+            comparison = {
+                "Metric": [
+                    "Home Price", "Loan Amount", "Interest Rate", "Term (years)",
+                    "Monthly Payment", "DTI % (Monthly / Income)"
+                ],
+                "Loan A": [
+                    f"${home_price_a:,.2f}", f"${loan_amt_a:,.2f}", f"{interest_a:.2f}%", f"{term_a}",
+                    f"${monthly_a:,.2f}", f"{(monthly_a / income_a * 100):.2f}%"
+                ],
+                "Loan B": [
+                    f"${home_price_b:,.2f}", f"${loan_amt_b:,.2f}", f"{interest_b:.2f}%", f"{term_b}",
+                    f"${monthly_b:,.2f}", f"{(monthly_b / income_b * 100):.2f}%"
+                ]
+            }
+        
+            df_compare = pd.DataFrame(comparison)
+            st.dataframe(df_compare, use_container_width=True)
     
     
     
