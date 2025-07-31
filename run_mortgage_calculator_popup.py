@@ -5,7 +5,7 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 from buttons import reset_year_filter
-from st_aggrid import AgGrid, GridOptionBuilder
+from st_aggrid import AgGrid, GridOptionsBuilder
 
 
 st.set_page_config(page_title="Mortgage Calculator", layout="wide")
