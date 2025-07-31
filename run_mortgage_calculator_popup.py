@@ -251,7 +251,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
             st.write(f"**Maintenance (Initial):** ${base_maint:,.2f}")
             total_monthly_payment = monthly_principal_interest + monthly_property_tax + monthly_insurance + initial_pmi_monthly + base_hoa + base_maint
             st.markdown(f"### 👉 Total Monthly Payment: **${total_monthly_payment:,.2f}**")
-        with st.expander("📌 Key Loan Metrics", expanded=True):
+        with st.expander("📌 Key Loan Metrics"):
             col1, col2, col3 = st.columns(3)
             col1.metric("Monthly Payment", f"${total_monthly_payment:,.0f}")
             col2.metric("Time to Payoff", f"{years}y {months}m")
