@@ -240,22 +240,23 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
 
     with tab1:
         st.markdown('<div class="chart-kpi"><h3>📊 Monthly Payment Breakdown</h3></div>', unsafe_allow_html=True)
-        st.write(f"**Loan Amount:** ${loan_amount:,.2f}")
-        st.write(f"**Principal & Interest:** ${monthly_principal_interest:,.2f}")
-        st.write(f"**Property Tax:** ${monthly_property_tax:,.2f}")
-        st.write(f"**Insurance:** ${monthly_insurance:,.2f}")
-        if initial_pmi_monthly > 0:
-            st.write(f"**PMI (Initial):** ${initial_pmi_monthly:,.2f}")
-        st.write(f"**HOA (Initial):** ${base_hoa:,.2f}")
-        st.write(f"**Maintenance (Initial):** ${base_maint:,.2f}")
-        total_monthly_payment = monthly_principal_interest + monthly_property_tax + monthly_insurance + initial_pmi_monthly + base_hoa + base_maint
-        st.markdown(f"### 👉 Total Monthly Payment: **${total_monthly_payment:,.2f}**")
-        st.subheader("📌 Key Loan Metrics")
-        col1, col2, col3 = st.columns(3)
-        col1.metric("Monthly Payment", f"${total_monthly_payment:,.0f}")
-        col2.metric("Time to Payoff", f"{years}y {months}m")
-        col3.metric("Total Interest", f"${df_monthly['Interest'].sum():,.0f}")
-       
+        with st.expander("📌 Full Payment Breakdown"):
+            st.write(f"**Loan Amount:** ${loan_amount:,.2f}")
+            st.write(f"**Principal & Interest:** ${monthly_principal_interest:,.2f}")
+            st.write(f"**Property Tax:** ${monthly_property_tax:,.2f}")
+            st.write(f"**Insurance:** ${monthly_insurance:,.2f}")
+            if initial_pmi_monthly > 0:
+                st.write(f"**PMI (Initial):** ${initial_pmi_monthly:,.2f}")
+            st.write(f"**HOA (Initial):** ${base_hoa:,.2f}")
+            st.write(f"**Maintenance (Initial):** ${base_maint:,.2f}")
+            total_monthly_payment = monthly_principal_interest + monthly_property_tax + monthly_insurance + initial_pmi_monthly + base_hoa + base_maint
+            st.markdown(f"### 👉 Total Monthly Payment: **${total_monthly_payment:,.2f}**")
+        with st.expander("📌 Key Loan Metrics")
+            col1, col2, col3 = st.columns(3)
+            col1.metric("Monthly Payment", f"${total_monthly_payment:,.0f}")
+            col2.metric("Time to Payoff", f"{years}y {months}m")
+            col3.metric("Total Interest", f"${df_monthly['Interest'].sum():,.0f}")
+           
 
 
 
