@@ -320,7 +320,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
                 # Convert selected years back to months for filtering
                 month_start = year_range[0] * 12
                 month_end = (year_range[1] + 1) * 12 - 1
-                )
+                
             
                 # ✅ Filter the DataFrame for the selected range
                 filtered_df = df_monthly[(df_monthly["Month"] >= month_start) & (df_monthly["Month"] <= month_end)]
