@@ -304,21 +304,21 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
                 )
             
                 # ✅ Filter the DataFrame for the selected range
-                     filtered_df = df_monthly[
+                filtered_df = df_monthly[
                     (df_monthly["Month"] >= month_range[0]) &
                     (df_monthly["Month"] <= month_range[1])
                 ]
             
                 # 📈 Chart for filtered range
-                    fig1 = go.Figure()
-                    fig1.add_trace(go.Scatter(
+                fig1 = go.Figure()
+                fig1.add_trace(go.Scatter(
                     x=filtered_df["Month"],
                     y=filtered_df["Balance"],
                     mode='lines+markers',
                     name='Balance',
                     line=dict(color='blue')
                 ))
-                    fig1.update_layout(
+                fig1.update_layout(
                     xaxis_title="Month",
                     yaxis_title="Balance ($)",
                     template="plotly_white",
