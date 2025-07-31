@@ -131,14 +131,3 @@ div[data-baseweb="tab-panel"] {
     padding-right: 1.5rem !important;
     max-width: 100% !important;
 }
-.kpi-card {
-    background-color: #eaf4fc;
-    padding: 18px 20px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
-    border: 1px solid #d0e8ff;
-}
-.kpi-card {
-    border: 2px dashed red;
-}
