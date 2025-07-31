@@ -138,3 +138,9 @@ div[data-baseweb="tab-panel"] {
     margin-bottom: 20px;
     background-color: #ffffff;
 }
+thead tr {
+    background-color: #f0f2f6;
+}
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
