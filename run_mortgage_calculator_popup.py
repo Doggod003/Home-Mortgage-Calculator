@@ -144,23 +144,6 @@ base_maint = st.sidebar.number_input("Monthly Maintenance Estimate ($)", min_val
 # ----------------------------
 # Sidebar Logic
 # ----------------------------
-with st.sidebar:
-    mortgage_sidebar()  # 👈 run sidebar logic
-
-# Ensure session state defaults exist
-st.session_state.setdefault("home_price", 300000)
-st.session_state.setdefault("down_payment", 60000)
-st.session_state.setdefault("interest_rate", 6.5)
-st.session_state.setdefault("loan_term", 30)
-
-# Use session state values in your main logic
-home_price = st.session_state["home_price"]
-down_payment = st.session_state["down_payment"]
-interest_rate = st.session_state["interest_rate"]
-loan_term_years = st.session_state["loan_term"]
-
-
-
 
 
 # ----------------------------
