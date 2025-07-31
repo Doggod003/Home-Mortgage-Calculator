@@ -4,6 +4,7 @@ import tempfile
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
+from buttons import reset_year_filter
 
 st.set_page_config(page_title="Mortgage Calculator", layout="wide")
 
@@ -241,6 +242,17 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
     ])
 
     with tab1:
+        min_year = int(df_monthly["Month"].min() / 12)
+        max_year = int(df_monthly["Month"].max() / 12)
+        
+        # Show the reset button from the external file
+        reset_year_filter(min_year, max_year)
+        
+        # Use the year_range from session state
+        year_range = st.session_state.year_range
+        month_start = year_range[0] * 12
+        month_end = (year_range[1] + 1) * 12 - 1
+        filtered_df = df_monthly[(df_monthly["Month"] >= month_start) & (df_monthly["Month"] <= month_end)]
         st.markdown('<div class="chart-kpi"><h3>📊 Monthly Payment Breakdown</h3></div>', unsafe_allow_html=True)        
         with st.expander("📌 Full Payment Breakdown", expanded=True):
             st.write(f"**Loan Amount:** ${loan_amount:,.2f}")
