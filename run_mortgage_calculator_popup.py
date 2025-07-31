@@ -312,18 +312,18 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
                 st.markdown('<div class="chart-wrapper">', unsafe_allow_html=True)
         
                  # 🎚️ Slider to control which months to display
-                month_range = st.slider(
-                    "Select Month Range",
-                    min_value=1,
-                    max_value=len(df_monthly),
-                    value=(1, 360),
-                    step=1
+                # Create a slider using years instead of months
+                min_year = int(df_monthly["Month"].min() / 12)
+                max_year = int(df_monthly["Month"].max() / 12)
+                year_range = st.slider("Select Year Range", min_year, max_year, (min_year, max_year))
+                
+                # Convert selected years back to months for filtering
+                month_start = year_range[0] * 12
+                month_end = (year_range[1] + 1) * 12 - 1
                 )
             
                 # ✅ Filter the DataFrame for the selected range
-                filtered_df = df_monthly[
-                    (df_monthly["Month"] >= month_range[0]) &
-                    (df_monthly["Month"] <= month_range[1])
+                filtered_df = df_monthly[(df_monthly["Month"] >= month_start) & (df_monthly["Month"] <= month_end)]
                 ]
             
                 # 📈 Chart for filtered range
