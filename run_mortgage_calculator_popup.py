@@ -471,22 +471,34 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
             }
         
             df_compare = pd.DataFrame(comparison)
-            st.dataframe(df_compare, use_container_width=True)
-    
-    
-    
-    
-    
+            st.dataframe(df_compare, use_container_width=True)    
+       
 
     
     with tab6:
         st.markdown('<div class="chart-kpi"><h3>📂 Calculation History</h3></div>', unsafe_allow_html=True)
-        with st.expander("📁 View Saved Calculations"):   
+        with st.expander("📁 View Saved Calculations", expanded=True):   
             if st.session_state.history:
                 df_history = pd.DataFrame(st.session_state.history)
-                st.dataframe(df_history)
-            else:
-                st.info("No calculations saved yet.")
+    
+                # Set up AgGrid options
+                gb = GridOptionsBuilder.from_dataframe(df_history)
+                gb.configure_pagination(paginationAutoPageSize=True)
+                gb.configure_side_bar()  # Optional: adds filters and column chooser
+                gb.configure_default_column(groupable=True, value=True, enableRowGroup=True, editable=False)
+                gb.configure_selection(selection_mode="single", use_checkbox=True)
+    
+                grid_options = gb.build()
+    
+                AgGrid(
+                    df_history,
+                    gridOptions=grid_options,
+                    height=300,
+                    theme="streamlit",  # Other themes: "alpine", "balham", "material"
+                    enable_enterprise_modules=False
+                )
+        else:
+            st.info("No calculations saved yet.")
 
     with tab7:
         csv = df_monthly.to_csv(index=False).encode('utf-8')
