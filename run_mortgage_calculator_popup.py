@@ -307,12 +307,12 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
     
     with tab4: #TAB 4
        # Year Slider Section
-    min_year = int(df_monthly["Month"].min() / 12)
-    max_year = int(df_monthly["Month"].max() / 12)
-    year_range = st.slider("Select Year Range", min_year, max_year, (min_year, max_year))
-    month_start = year_range[0] * 12
-    month_end = (year_range[1] + 1) * 12 - 1
-    filtered_df = df_monthly[(df_monthly["Month"] >= month_start) & (df_monthly["Month"] <= month_end)]
+        min_year = int(df_monthly["Month"].min() / 12)
+        max_year = int(df_monthly["Month"].max() / 12)
+        year_range = st.slider("Select Year Range", min_year, max_year, (min_year, max_year))
+        month_start = year_range[0] * 12
+        month_end = (year_range[1] + 1) * 12 - 1
+        filtered_df = df_monthly[(df_monthly["Month"] >= month_start) & (df_monthly["Month"] <= month_end)]
     
     # 📈 Balance Timeline
     st.markdown('<div class="chart-kpi"><h3>📈 Balance Timeline</h3></div>', unsafe_allow_html=True)
