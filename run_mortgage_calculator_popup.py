@@ -291,8 +291,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
     with tab4: #TAB 4
         st.markdown('<div class="chart-kpi"><h3>📈 Balance Timeline</h3></div>', unsafe_allow_html=True)
         with st.expander("📉 Balance Over Time", expanded=True):
-
-        month_range = st.slider("Select Month Range", 
+                month_range = st.slider("Select Month Range", 
                             min_value=1, 
                             max_value=len(df_monthly), 
                             value=(1, 360), 
