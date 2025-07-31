@@ -326,7 +326,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         month_start = year_range[0] * 12
         month_end = (year_range[1] + 1) * 12 - 1
         filtered_df = df_monthly[(df_monthly["Month"] >= month_start) & (df_monthly["Month"] <= month_end)]
-
+        draw_balance_chart(filtered_df)
     # 📈 Balance Timeline
         st.markdown('<div class="chart-kpi"><h3>📈 Balance Timeline</h3></div>', unsafe_allow_html=True)
         with st.expander("📉 Balance Over Time", expanded=True):
