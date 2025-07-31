@@ -131,3 +131,10 @@ div[data-baseweb="tab-panel"] {
     padding-right: 1.5rem !important;
     max-width: 100% !important;
 }
+.chart-box {
+    border: 2px solid #2c91f0;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 24px;
+    background-color: #ffffff;
+}
