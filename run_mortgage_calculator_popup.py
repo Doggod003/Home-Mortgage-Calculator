@@ -251,7 +251,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
             st.write(f"**Maintenance (Initial):** ${base_maint:,.2f}")
             total_monthly_payment = monthly_principal_interest + monthly_property_tax + monthly_insurance + initial_pmi_monthly + base_hoa + base_maint
             st.markdown(f"### 👉 Total Monthly Payment: **${total_monthly_payment:,.2f}**")
-        with st.expander("📌 Key Loan Metrics"):
+        with st.expander("📌 Key Loan Metrics", expanded=True):
             col1, col2, col3 = st.columns(3)
             col1.metric("Monthly Payment", f"${total_monthly_payment:,.0f}")
             col2.metric("Time to Payoff", f"{years}y {months}m")
@@ -262,7 +262,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
 
     with tab2:
         st.markdown('<div class="chart-kpi"><h3>💡 Affordability Check</h3></div>', unsafe_allow_html=True)
-        with st.expander("📈 Debt-to-Income (DTI) Analysis"):
+        with st.expander("📈 Debt-to-Income (DTI) Analysis", expanded=True):
             payment_to_income = (total_monthly_payment / monthly_income) * 100
             st.write(f"Your mortgage payment is **{payment_to_income:.2f}%** of your monthly income.")
             if payment_to_income > 36:
@@ -276,16 +276,16 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
 
     with tab3:
         st.markdown('<div class="chart-kpi"><h3>📋 Monthly Amortization Schedule</h3></div>', unsafe_allow_html=True)
-        with st.expander("📅 Amortization Table"):
+        with st.expander("📅 Amortization Table", expanded=True):
             st.dataframe(df_monthly.head(360))
-        with st.expander("📌 Summary & Totals"):
+        with st.expander("📌 Summary & Totals", expanded=True):
             st.success(f"🏁 Paid off in {years} years and {months} months.")
             st.write(f"💸 Total paid: **${df_monthly['Payment'].sum():,.2f}**")
             st.write(f"📉 Total interest paid: **${df_monthly['Interest'].sum():,.2f}**")
 
     with tab4:
         st.markdown('<div class="chart-kpi"><h3>📈 Balance Timeline</h3></div>', unsafe_allow_html=True)
-        with st.expander("📉 Balance Over Time"):
+        with st.expander("📉 Balance Over Time", expanded=True):
             fig1 = go.Figure()
             fig1.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["Balance"], mode='lines+markers', name='Balance', line=dict(color='blue')))
             fig1.update_layout(
@@ -295,7 +295,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         st.plotly_chart(fig1, use_container_width=True)
     
         st.markdown('<div class="chart-kpi"><h3>📊 Principal vs Interest</h3></div>', unsafe_allow_html=True)
-        with st.expander("📊 Principal vs Interest"):    
+        with st.expander("📊 Principal vs Interest", expanded=True):    
             fig2 = go.Figure()
             fig2.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["Principal"], mode='lines+markers', name='Principal', line=dict(color='green')))
             fig2.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["Interest"], mode='lines+markers', name='Interest', line=dict(color='red')))
@@ -306,7 +306,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         st.plotly_chart(fig2, use_container_width=True)
     
         st.markdown('<div class="chart-kpi"><h3>🏠 HOA & Maintenance Over Time</h3></div>', unsafe_allow_html=True)
-        with st.expander("🏠 HOA & Maintenance"):
+        with st.expander("🏠 HOA & Maintenance", expanded=True):
             fig3 = go.Figure()
             fig3.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["HOA"], mode='lines+markers', name='HOA', line=dict(color='purple')))
             fig3.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["Maintenance"], mode='lines+markers', name='Maintenance', line=dict(color='orange')))
@@ -333,7 +333,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         st.markdown('<div class="chart-kpi"><h3>📊 Side-by-Side Loan Comparison</h3></div>', unsafe_allow_html=True)
         col1, col2 = st.columns(2)
         with col1:
-            st.markdown("### 🅰️ Loan A")
+            st.markdown("### 🅰️ Loan A", expanded=True)
             with st.expander("🅰️ Loan A Inputs"):
                 home_price_a = st.number_input("Home Price (A)", value=300000, key="price_a")
                 down_payment_a = st.number_input("Down Payment (A)", value=60000, key="down_a")
@@ -343,7 +343,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         
         with col2:
             st.markdown("### 🅱️ Loan B")
-            with st.expander("🅱️ Loan B Inputs"):    
+            with st.expander("🅱️ Loan B Inputs", expanded=True):    
                 home_price_b = st.number_input("Home Price (B)", value=325000, key="price_b")
                 down_payment_b = st.number_input("Down Payment (B)", value=65000, key="down_b")
                 interest_b = st.number_input("Interest Rate % (B)", value=6.0, key="rate_b")
