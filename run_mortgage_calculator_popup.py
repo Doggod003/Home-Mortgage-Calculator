@@ -475,48 +475,49 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
        
 
     
-    with tab6:
-        st.markdown('<div class="chart-kpi"><h3>📂 Calculation History</h3></div>', unsafe_allow_html=True)
-        with st.expander("📁 View Saved Calculations", expanded=True):   
-            if st.session_state.history:
-                df_history = pd.DataFrame(st.session_state.history)
-    
-                # Set up AgGrid options
-                gb = GridOptionsBuilder.from_dataframe(df_history)
-                gb.configure_pagination(paginationAutoPageSize=True)
-                gb.configure_side_bar()  # Optional: adds filters and column chooser
-                gb.configure_default_column(groupable=True, value=True, enableRowGroup=True, editable=False)
-                gb.configure_selection(selection_mode="single", use_checkbox=True)
-    
-                grid_options = gb.build()
-    
-                grid_response = AgGrid(
-                    df_history,
-                    gridOptions=grid_options,
-                    height=400,
-                    theme="streamlit",
-                    fit_columns_on_grid_load=True,
-                    update_mode=GridUpdateMode.SELECTION_CHANGED
-             if selected:
-                    selected_data = selected[0]
-    
-                    pdf_data = {
-                        "Home Price": selected_data.get("Home Price"),
-                        "Loan Amount": selected_data.get("Loan Amount"),
-                        "Interest Rate": selected_data.get("Interest Rate"),
-                        "Loan Term": selected_data.get("Loan Term"),
-                        "P&I": selected_data.get("P&I"),
-                        "Tax": selected_data.get("Tax"),
-                        "Insurance": selected_data.get("Insurance"),
-                        "PMI": selected_data.get("PMI"),
-                        "HOA": selected_data.get("HOA"),
-                        "Maintenance": selected_data.get("Maintenance"),
-                        "Total Payment": selected_data.get("Total Payment"),
-                        "DTI": selected_data.get("DTI"),
-                        "Payoff Time": selected_data.get("Payoff Time"),
-                        "Total Paid": selected_data.get("Total Paid"),
-                        "Total Interest": selected_data.get("Total Interest"),
-                    }
+   with tab6:
+    st.markdown('<div class="chart-kpi"><h3>📂 Calculation History</h3></div>', unsafe_allow_html=True)
+    with st.expander("📁 View Saved Calculations", expanded=True):
+        if st.session_state.history:
+            df_history = pd.DataFrame(st.session_state.history)
+
+            gb = GridOptionsBuilder.from_dataframe(df_history)
+            gb.configure_pagination()
+            gb.configure_default_column(groupable=True, value=True, editable=False)
+            gb.configure_selection(selection_mode="single", use_checkbox=True)
+            grid_options = gb.build()
+
+            grid_response = AgGrid(
+                df_history,
+                gridOptions=grid_options,
+                height=400,
+                theme="streamlit",
+                fit_columns_on_grid_load=True,
+                update_mode=GridUpdateMode.SELECTION_CHANGED
+            )
+
+            selected = grid_response['selected_rows']
+
+            if selected:
+                selected_data = selected[0]
+
+                pdf_data = {
+                    "Home Price": selected_data.get("Home Price"),
+                    "Loan Amount": selected_data.get("Loan Amount"),
+                    "Interest Rate": selected_data.get("Interest Rate"),
+                    "Loan Term": selected_data.get("Loan Term"),
+                    "P&I": selected_data.get("P&I"),
+                    "Tax": selected_data.get("Tax"),
+                    "Insurance": selected_data.get("Insurance"),
+                    "PMI": selected_data.get("PMI"),
+                    "HOA": selected_data.get("HOA"),
+                    "Maintenance": selected_data.get("Maintenance"),
+                    "Total Payment": selected_data.get("Total Payment"),
+                    "DTI": selected_data.get("DTI"),
+                    "Payoff Time": selected_data.get("Payoff Time"),
+                    "Total Paid": selected_data.get("Total Paid"),
+                    "Total Interest": selected_data.get("Total Interest"),
+                }
 
                 from fpdf import FPDF
                 pdf = FPDF()
@@ -537,9 +538,8 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
                         file_name="mortgage_report.pdf",
                         mime="application/pdf"
                     )
-                )
-            else:
-                st.info("No calculations saved yet.")
+        else:
+            st.info("No calculations saved yet.")
 
     with tab7:
         csv = df_monthly.to_csv(index=False).encode('utf-8')
