@@ -291,33 +291,41 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
     with tab4: #TAB 4
         st.markdown('<div class="chart-kpi"><h3>📈 Balance Timeline</h3></div>', unsafe_allow_html=True)
         with st.expander("📉 Balance Over Time", expanded=True):
-                month_range = st.slider("Select Month Range", 
-                            min_value=1, 
-                            max_value=len(df_monthly), 
-                            value=(1, 360), 
-                            step=1)
-
-   
-            filtered_df = df_monthly[(df_monthly["Month"] >= month_range[0]) & (df_monthly["Month"] <= month_range[1])] # Filter the DataFrame for the selected range
             with st.container():
                 st.markdown('<div class="chart-wrapper">', unsafe_allow_html=True)
         
-                fig1 = go.Figure()
-                fig1.add_trace(go.Scatter(
-                    x=df_monthly["Month"], 
-                    y=df_monthly["Balance"], 
-                    mode='lines+markers', 
-                    name='Balance', 
+                 # 🎚️ Slider to control which months to display
+                    month_range = st.slider(
+                    "Select Month Range",
+                    min_value=1,
+                    max_value=len(df_monthly),
+                    value=(1, 360),
+                    step=1
+                )
+            
+                # ✅ Filter the DataFrame for the selected range
+                 filtered_df = df_monthly[
+                    (df_monthly["Month"] >= month_range[0]) &
+                    (df_monthly["Month"] <= month_range[1])
+                ]
+            
+                # 📈 Chart for filtered range
+                    fig1 = go.Figure()
+                    fig1.add_trace(go.Scatter(
+                    x=filtered_df["Month"],
+                    y=filtered_df["Balance"],
+                    mode='lines+markers',
+                    name='Balance',
                     line=dict(color='blue')
                 ))
-                fig1.update_layout(
-                    xaxis_title="Month", 
-                    yaxis_title="Balance ($)", 
+                    fig1.update_layout(
+                    xaxis_title="Month",
+                    yaxis_title="Balance ($)",
                     template="plotly_white",
-                    legend=dict(x=1.05, y=1), 
+                    legend=dict(x=1.05, y=1),
                     margin=dict(r=120)
                 )
-        
+            
                 st.plotly_chart(fig1, use_container_width=True)
                 st.markdown('</div>', unsafe_allow_html=True)
 
