@@ -324,7 +324,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
             
                 # ✅ Filter the DataFrame for the selected range
                 filtered_df = df_monthly[(df_monthly["Month"] >= month_start) & (df_monthly["Month"] <= month_end)]
-                ]
+                
             
                 # 📈 Chart for filtered range
                 fig1 = go.Figure()
