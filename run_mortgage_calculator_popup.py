@@ -222,7 +222,23 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         "Years to Payoff": f"{years}y {months}m",
         "Total Interest": round(df_monthly['Interest'].sum(), 2)
     })
+st.markdown("""
+    <style>
+    .chart-kpi h3 {
+        background: linear-gradient(90deg, #f8f9fa, #e9ecef);
+        padding: 12px 16px;
+        border-radius: 10px;
+        font-size: 1.2rem;
+        color: #0e5c8e;
+        border-left: 6px solid #2c91f0;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
+
+    
     # ----------------------------
     # Tabs
     # ----------------------------
