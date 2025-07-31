@@ -261,6 +261,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
 
 
     with tab2:
+        st.markdown('<div class="kpi-card">', unsafe_allow_html=True)  # Start wrapper
         st.markdown('<div class="chart-kpi"><h3>💡 Affordability Check</h3></div>', unsafe_allow_html=True)
         with st.expander("📈 Debt-to-Income (DTI) Analysis", expanded=True):
             payment_to_income = (total_monthly_payment / monthly_income) * 100
@@ -273,6 +274,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
                 st.success("✅ Affordable based on income.")
             df_monthly["DTI %"] = (df_monthly["Payment"] / monthly_income) * 100
             st.line_chart(df_monthly.set_index("Month")[["DTI %"]])
+            st.markdown('</div>', unsafe_allow_html=True)
 
     with tab3:
         st.markdown('<div class="chart-kpi"><h3>📋 Monthly Amortization Schedule</h3></div>', unsafe_allow_html=True)
@@ -284,6 +286,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
             st.write(f"📉 Total interest paid: **${df_monthly['Interest'].sum():,.2f}**")
 
     with tab4:
+        st.markdown('<div class="kpi-card">', unsafe_allow_html=True)  # Start wrapper
         st.markdown('<div class="chart-kpi"><h3>📈 Balance Timeline</h3></div>', unsafe_allow_html=True)
         with st.expander("📉 Balance Over Time", expanded=True):
             fig1 = go.Figure()
@@ -315,6 +318,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
                 legend=dict(x=1.05, y=1), margin=dict(r=120)
             )
         st.plotly_chart(fig3, use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
 
     with tab5:
