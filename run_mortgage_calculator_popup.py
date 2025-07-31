@@ -497,8 +497,8 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
                     theme="streamlit",  # Other themes: "alpine", "balham", "material"
                     enable_enterprise_modules=False
                 )
-        else:
-            st.info("No calculations saved yet.")
+            else:
+                st.info("No calculations saved yet.")
 
     with tab7:
         csv = df_monthly.to_csv(index=False).encode('utf-8')
