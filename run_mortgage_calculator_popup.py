@@ -288,17 +288,22 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
             st.write(f"📉 Total interest paid: **${df_monthly['Interest'].sum():,.2f}**")
 
     with tab4:
-        st.markdown('<div class="kpi-card">', unsafe_allow_html=True)  # Start wrapper
+        
         st.markdown('<div class="chart-kpi"><h3>📈 Balance Timeline</h3></div>', unsafe_allow_html=True)
         with st.expander("📉 Balance Over Time", expanded=True):
+            st.markdown('<div class="kpi-card">', unsafe_allow_html=True)  # Start wrapper
             fig1 = go.Figure()
             fig1.add_trace(go.Scatter(x=df_monthly["Month"], y=df_monthly["Balance"], mode='lines+markers', name='Balance', line=dict(color='blue')))
             fig1.update_layout(
                 xaxis_title="Month", yaxis_title="Balance ($)", template="plotly_white",
                 legend=dict(x=1.05, y=1), margin=dict(r=120)
         )
-        st.plotly_chart(fig1, use_container_width=True)
-    
+        st.plotly_chart(fig1, use_container_width=True
+        st.markdown('</div>', unsafe_allow_html=True)
+               
+        #----
+        #P&I
+        #----
         st.markdown('<div class="chart-kpi"><h3>📊 Principal vs Interest</h3></div>', unsafe_allow_html=True)
         with st.expander("📊 Principal vs Interest", expanded=True):    
             fig2 = go.Figure()
@@ -309,7 +314,9 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
                 legend=dict(x=1.05, y=1), margin=dict(r=120)
         )
         st.plotly_chart(fig2, use_container_width=True)
-    
+        #-----
+        #HOA & MAINT
+        #-----
         st.markdown('<div class="chart-kpi"><h3>🏠 HOA & Maintenance Over Time</h3></div>', unsafe_allow_html=True)
         with st.expander("🏠 HOA & Maintenance", expanded=True):
             fig3 = go.Figure()
