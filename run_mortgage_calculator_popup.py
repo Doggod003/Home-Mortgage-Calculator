@@ -291,7 +291,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
     with tab4: #TAB 4
         st.markdown('<div class="chart-kpi"><h3>📈 Balance Timeline</h3></div>', unsafe_allow_html=True)
         with st.expander("📉 Balance Over Time", expanded=True):
-            st.markdown('<div class="chart-box">', unsafe_allow_html=True) # 🟦 Begin chart border box  
+            st.markdown('<div class="chart-wrapper">', unsafe_allow_html=True) # 🟦 Begin chart border box  
             fig1 = go.Figure()
             fig1.add_trace(go.Scatter(
                 x=df_monthly["Month"], 
