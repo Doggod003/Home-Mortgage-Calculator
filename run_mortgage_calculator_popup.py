@@ -295,7 +295,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
                 st.markdown('<div class="chart-wrapper">', unsafe_allow_html=True)
         
                  # 🎚️ Slider to control which months to display
-                    month_range = st.slider(
+                month_range = st.slider(
                     "Select Month Range",
                     min_value=1,
                     max_value=len(df_monthly),
