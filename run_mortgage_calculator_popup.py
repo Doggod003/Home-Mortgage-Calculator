@@ -246,7 +246,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
     with tab1:
         min_year = int(df_monthly["Month"].min() / 12)
         max_year = int(df_monthly["Month"].max() / 12)
-        
+        draw_balance_chart(filtered_df)
         # Show the reset button from the external file
         reset_year_filter(min_year, max_year)
         
@@ -326,7 +326,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         month_start = year_range[0] * 12
         month_end = (year_range[1] + 1) * 12 - 1
         filtered_df = df_monthly[(df_monthly["Month"] >= month_start) & (df_monthly["Month"] <= month_end)]
-        draw_balance_chart(filtered_df)
+        
     # 📈 Balance Timeline
         st.markdown('<div class="chart-kpi"><h3>📈 Balance Timeline</h3></div>', unsafe_allow_html=True)
         with st.expander("📉 Balance Over Time", expanded=True):
