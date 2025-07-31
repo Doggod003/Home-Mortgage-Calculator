@@ -239,8 +239,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
     ])
 
     with tab1:
-        st.markdown("""<div style='background-color:#f0f2f6;padding:10px 14px;border-radius:10px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,0.08)'><h4 style='margin:0;color:#0e5c8e;font-weight:600'>📊 Monthly Payment Breakdown</h4></div>""", unsafe_allow_html=True)
-        with st.expander("📌 Full Payment Breakdown", expanded=True):
+    st.markdown('<div class="chart-kpi"><h3>📊 Monthly Payment Breakdown</h3></div>', unsafe_allow_html=True)        with st.expander("📌 Full Payment Breakdown", expanded=True):
             st.write(f"**Loan Amount:** ${loan_amount:,.2f}")
             st.write(f"**Principal & Interest:** ${monthly_principal_interest:,.2f}")
             st.write(f"**Property Tax:** ${monthly_property_tax:,.2f}")
