@@ -5,7 +5,7 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 from buttons import reset_year_filter
-from components.charts import draw_balance_chart
+from st_aggrid import AgGrid, GridOptionBuilder
 
 
 st.set_page_config(page_title="Mortgage Calculator", layout="wide")
@@ -312,13 +312,20 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
 
     with tab3:
         st.markdown('<div class="chart-kpi"><h3>📋 Monthly Amortization Schedule</h3></div>', unsafe_allow_html=True)
-        with st.expander("📅 Amortization Table", expanded=True):
-            st.dataframe(df_monthly.head(360))
-        with st.expander("📌 Summary & Totals", expanded=True):
-            st.success(f"🏁 Paid off in {years} years and {months} months.")
-            st.write(f"💸 Total paid: **${df_monthly['Payment'].sum():,.2f}**")
-            st.write(f"📉 Total interest paid: **${df_monthly['Interest'].sum():,.2f}**")
 
+        with st.expander("📅 Amortization Table", expanded=True):
+            gb = GridOptionsBuilder.from_dataframe(df_monthly.head(360))
+            gb.configure_pagination(paginationAutoPageSize=True)
+            gb.configure_default_column(resizable=True, filter=True, sortable=True)
+            gridOptions = gb.build()
+            AgGrid(
+                df_monthly.head(360),
+                gridOptions=gridOptions,
+                enable_enterprise_modules=False,
+                theme="material",  # Options: "streamlit", "alpine", "material", "balham", etc.
+                fit_columns_on_grid_load=True,
+                height=400,
+            )
     
     with tab4: #TAB 4 
         min_year = int(df_monthly["Month"].min() / 12)
