@@ -232,7 +232,7 @@ if home_price > 0 and down_payment >= 0 and down_payment < home_price and intere
         "📊 Payment",
         "💡 Affordable?",
         "📋 Table",
-        "📈 Charts",
+        "📈 Analysis",
         "📊 Compare",
         "📂 Archive",
         "💾 Export"
