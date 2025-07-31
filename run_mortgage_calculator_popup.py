@@ -13,7 +13,7 @@ def load_local_css(file_path):
 
 # Load the CSS at the beginning of the app
 load_local_css("assets/tabs.css")  # or "styles/tabs.css" if you used styles/
-with open("tabs.css") as f:
+with open("assets/tabs.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 #---------------------------------------------------------------------------
 class MortgagePDF(FPDF):
