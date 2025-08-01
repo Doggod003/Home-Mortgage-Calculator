@@ -1,13 +1,13 @@
 # sidebar.py
+
 import streamlit as st
 
-def load_sidebar_inputs():
+def mortgage_sidebar_inputs():
     st.sidebar.header("Loan Setup")
 
     home_price = st.sidebar.number_input("Home Price ($)", min_value=10000, value=300000, step=1000)
     loan_type = st.sidebar.selectbox("Loan Type Preset", ["Conventional (20%)", "FHA (3.5%)", "VA (0%)", "Custom"])
 
-    # Presets based on loan type
     if loan_type == "Conventional (20%)":
         default_down_percent = 20.0
         default_interest = 6.5
@@ -25,7 +25,7 @@ def load_sidebar_inputs():
         default_interest = 6.5
         default_term = 30
 
-    down_payment_percent_input = st.sidebar.number_input("Down Payment (%)", 0.0, 100.0, value=default_down_percent, step=0.5)
+    down_payment_percent_input = st.sidebar.number_input("Down Payment (% of Home Price)", 0.0, 100.0, value=default_down_percent, step=0.5)
     down_payment = home_price * (down_payment_percent_input / 100)
 
     loan_term_years = st.sidebar.selectbox("Loan Term (years)", [15, 30], index=0 if default_term == 15 else 1)
