@@ -460,7 +460,7 @@ else:
 
     
 with tab6:
-    st.markdown('<div class="chart-kpi"><h3>📂 Calculation History</h3></div>', unsafe_allow_html=True)
+    st.markdown('<div class="chart-kpi"><h3>📂 Archive</h3></div>', unsafe_allow_html=True)
     with st.expander("📁 View Saved Calculations", expanded=True):
         if st.session_state.history:
             df_history = pd.DataFrame(st.session_state.history)
