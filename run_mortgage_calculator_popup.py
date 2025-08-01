@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 from buttons import reset_year_filter
 from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode
 from sidebar import mortgage_sidebar_inputs
-
+inputs = mortgage_sidebar_inputs()
 
 st.set_page_config(page_title="Mortgage Calculator", layout="wide")
 
