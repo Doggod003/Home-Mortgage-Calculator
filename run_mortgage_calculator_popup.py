@@ -9,6 +9,29 @@ from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode
 from sidebar import render_sidebar
 
 
+if st.session_state.get("confirmed") and "inputs" in st.session_state:
+    inputs = st.session_state.inputs
+
+    home_price = inputs["home_price"]
+    down_payment_percent = inputs["down_payment_percent"]
+    down_payment = home_price * (down_payment_percent / 100)
+    interest_rate = inputs["interest_rate"]
+    loan_term_years = inputs["loan_term_years"]
+    property_tax_rate = inputs["property_tax_rate"]
+    annual_insurance = inputs["annual_insurance"]
+    monthly_income = inputs["monthly_income"]
+    extra_payment_percent = inputs["extra_payment_percent"]
+    pmi_drops_off = inputs["pmi_drops_off"]
+    base_hoa = inputs["base_hoa"]
+    base_maint = inputs["base_maint"]
+
+    loan_amount = home_price - down_payment
+
+    # Continue using these values as needed
+else:
+    st.warning("Please confirm your loan setup using the sidebar.")
+
+
 st.set_page_config(page_title="Mortgage Calculator", layout="wide")
 
 def load_local_css(file_path):
