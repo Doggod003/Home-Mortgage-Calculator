@@ -1,8 +1,6 @@
-# sidebar.py
-
 import streamlit as st
 
-def mortgage_sidebar_inputs():
+def render_sidebar():
     st.sidebar.header("Loan Setup")
 
     home_price = st.sidebar.number_input("Home Price ($)", min_value=10000, value=300000, step=1000)
@@ -26,8 +24,6 @@ def mortgage_sidebar_inputs():
         default_term = 30
 
     down_payment_percent_input = st.sidebar.number_input("Down Payment (% of Home Price)", 0.0, 100.0, value=default_down_percent, step=0.5)
-    down_payment = home_price * (down_payment_percent_input / 100)
-
     loan_term_years = st.sidebar.selectbox("Loan Term (years)", [15, 30], index=0 if default_term == 15 else 1)
     interest_rate = st.sidebar.number_input("Interest Rate (%)", min_value=0.0, value=default_interest, step=0.1)
     property_tax_rate = st.sidebar.number_input("Property Tax Rate (%)", min_value=0.0, value=1.2, step=0.1)
@@ -38,18 +34,26 @@ def mortgage_sidebar_inputs():
     base_hoa = st.sidebar.number_input("Monthly HOA Fee ($)", min_value=0, value=100, step=50)
     base_maint = st.sidebar.number_input("Monthly Maintenance Estimate ($)", min_value=0, value=150, step=50)
 
-    return {
-        "home_price": home_price,
-        "loan_type": loan_type,
-        "down_payment_percent": down_payment_percent_input,
-        "down_payment": down_payment,
-        "loan_term_years": loan_term_years,
-        "interest_rate": interest_rate,
-        "property_tax_rate": property_tax_rate,
-        "annual_insurance": annual_insurance,
-        "monthly_income": monthly_income,
-        "extra_payment_percent": extra_payment_percent,
-        "pmi_drops_off": pmi_drops_off,
-        "base_hoa": base_hoa,
-        "base_maint": base_maint,
-    }
+    # Button to confirm
+    confirmed = st.sidebar.button("✅ Confirm Inputs")
+    if confirmed:
+        st.session_state.confirmed = True
+        st.session_state.inputs = {
+            "home_price": home_price,
+            "loan_type": loan_type,
+            "down_payment_percent": down_payment_percent_input,
+            "loan_term_years": loan_term_years,
+            "interest_rate": interest_rate,
+            "property_tax_rate": property_tax_rate,
+            "annual_insurance": annual_insurance,
+            "monthly_income": monthly_income,
+            "extra_payment_percent": extra_payment_percent,
+            "pmi_drops_off": pmi_drops_off,
+            "base_hoa": base_hoa,
+            "base_maint": base_maint,
+        }
+
+    # Reset Button (optional)
+    if st.sidebar.button("🔄 Reset Inputs"):
+        st.session_state.confirmed = False
+        st.experimental_rerun()
