@@ -117,7 +117,28 @@ render_sidebar()
 # ----------------------------
 # Mortgage Calculation
 # ----------------------------
-if home_price > 0 and down_payment >= 0 and down_payment < home_price and interest_rate > 0 and monthly_income > 0:
+if st.session_state.get("confirmed"):
+    inputs = st.session_state.inputs
+
+    home_price = inputs["home_price"]
+    down_payment_percent = inputs["down_payment_percent"]
+    down_payment = home_price * (down_payment_percent / 100)
+    interest_rate = inputs["interest_rate"]
+    monthly_income = inputs["monthly_income"]
+
+    if (
+        home_price > 0
+        and down_payment >= 0
+        and down_payment < home_price
+        and interest_rate > 0
+        and monthly_income > 0
+    ):
+        # Proceed with calculations
+        pass
+    else:
+        st.error("❌ Invalid loan inputs detected.")
+else:
+    st.warning("Please confirm your sidebar inputs.")
     loan_amount = home_price - down_payment
     monthly_interest = interest_rate / 100 / 12
     total_months = loan_term_years * 12
