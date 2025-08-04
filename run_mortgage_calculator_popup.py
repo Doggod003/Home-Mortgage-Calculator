@@ -16,9 +16,11 @@ with open(file_path) as f:
 st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 # Load the CSS at the beginning of the app
-load_local_css("assets/tabs.css")  # or "styles/tabs.css" if you used styles/
-with open("assets/tabs.css") as f:
-st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+def load_local_css(file_path):
+    with open(file_path) as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+load_local_css("assets/tabs.css")
 #---------------------------------------------------------------------------
 class MortgagePDF(FPDF):
 def header(self):
@@ -583,4 +585,5 @@ file_name="Mortgage_Summary.pdf",
 mime="application/pdf"
 )
 ~
+
 
