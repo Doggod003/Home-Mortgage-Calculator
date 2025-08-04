@@ -3,43 +3,37 @@ import streamlit as st
 def render_sidebar():
     st.sidebar.header("Loan Setup")
 
-    # Button that must be clicked to submit
-    if st.sidebar.button("Apply Inputs"):
-        st.session_state['sidebar_ready'] = True
+    # Collect sidebar inputs FIRST
+    home_price = st.sidebar.number_input("Home Price ($)", min_value=10000, value=300000, step=1000)
+    loan_type = st.sidebar.selectbox("Loan Type Preset", ["Conventional (20%)", "FHA (3.5%)", "VA (0%)", "Custom"])
 
-    if st.session_state.get("sidebar_ready"):
-        st.session_state['home_price'] = st.sidebar.number_input("Home Price ($)", min_value=10000, value=300000, step=1000)
-        st.session_state['loan_type'] = st.sidebar.selectbox("Loan Type Preset", ["Conventional (20%)", "FHA (3.5%)", "VA (0%)", "Custom"])
+    # Set default values based on preset
+    if loan_type == "Conventional (20%)":
+        default_down_percent, default_interest, default_term = 20.0, 6.5, 30
+    elif loan_type == "FHA (3.5%)":
+        default_down_percent, default_interest, default_term = 3.5, 6.0, 30
+    elif loan_type == "VA (0%)":
+        default_down_percent, default_interest, default_term = 0.0, 6.25, 30
+    else:
+        default_down_percent, default_interest, default_term = 10.0, 6.5, 30
 
-        # Loan type presets
-        if st.session_state['loan_type'] == "Conventional (20%)":
-            default_down_percent, default_interest, default_term = 20.0, 6.5, 30
-        elif st.session_state['loan_type'] == "FHA (3.5%)":
-            default_down_percent, default_interest, default_term = 3.5, 6.0, 30
-        elif st.session_state['loan_type'] == "VA (0%)":
-            default_down_percent, default_interest, default_term = 0.0, 6.25, 30
-        else:
-            default_down_percent, default_interest, default_term = 10.0, 6.5, 30
+    down_payment_percent = st.sidebar.number_input("Down Payment (% of Home Price)", 0.0, 100.0, value=default_down_percent, step=0.5)
+    loan_term_years = st.sidebar.selectbox("Loan Term (years)", [15, 30], index=0 if default_term == 15 else 1)
+    interest_rate = st.sidebar.number_input("Interest Rate (%)", min_value=0.0, value=default_interest, step=0.1)
+    property_tax_rate = st.sidebar.number_input("Property Tax Rate (%)", min_value=0.0, value=1.2, step=0.1)
+    annual_insurance = st.sidebar.number_input("Annual Home Insurance ($)", min_value=0, value=1200, step=100)
+    monthly_income = st.sidebar.number_input("Monthly Income ($)", min_value=0, value=6000, step=100)
+    extra_payment_percent = st.sidebar.slider("Extra % of Income Toward Loan Payoff", 0, 50, 10)
+    pmi_drops_off = st.sidebar.checkbox("PMI drops off at 20% equity", value=True)
+    base_hoa = st.sidebar.number_input("Monthly HOA Fee ($)", min_value=0, value=100, step=50)
+    base_maint = st.sidebar.number_input("Monthly Maintenance Estimate ($)", min_value=0, value=150, step=50)
 
-        st.session_state['down_percent'] = st.sidebar.number_input("Down Payment (% of Home Price)", 0.0, 100.0, value=default_down_percent, step=0.5)
-        st.session_state['loan_term_years'] = st.sidebar.selectbox("Loan Term (years)", [15, 30], index=0 if default_term == 15 else 1)
-        st.session_state['interest_rate'] = st.sidebar.number_input("Interest Rate (%)", min_value=0.0, value=default_interest, step=0.1)
-        st.session_state['property_tax_rate'] = st.sidebar.number_input("Property Tax Rate (%)", min_value=0.0, value=1.2, step=0.1)
-        st.session_state['annual_insurance'] = st.sidebar.number_input("Annual Home Insurance ($)", min_value=0, value=1200, step=100)
-        st.session_state['monthly_income'] = st.sidebar.number_input("Monthly Income ($)", min_value=0, value=6000, step=100)
-        st.session_state['extra_payment_percent'] = st.sidebar.slider("Extra % of Income Toward Loan Payoff", 0, 50, 10)
-        st.session_state['pmi_drops_off'] = st.sidebar.checkbox("PMI drops off at 20% equity", value=True)
-        st.session_state['base_hoa'] = st.sidebar.number_input("Monthly HOA Fee ($)", min_value=0, value=100, step=50)
-        st.session_state['base_maint'] = st.sidebar.number_input("Monthly Maintenance Estimate ($)", min_value=0, value=150, step=50)
-
-    # Button to confirm
-    confirmed = st.sidebar.button("✅ Confirm Inputs")
-    if confirmed:
-        st.session_state.confirmed = True
-        st.session_state.inputs = {
+    # ✅ Save values to session state on button click
+    if st.sidebar.button("Apply Loan Settings"):
+        st.session_state.update({
             "home_price": home_price,
             "loan_type": loan_type,
-            "down_payment_percent": down_payment_percent_input,
+            "down_payment_percent": down_payment_percent,
             "loan_term_years": loan_term_years,
             "interest_rate": interest_rate,
             "property_tax_rate": property_tax_rate,
@@ -48,10 +42,5 @@ def render_sidebar():
             "extra_payment_percent": extra_payment_percent,
             "pmi_drops_off": pmi_drops_off,
             "base_hoa": base_hoa,
-            "base_maint": base_maint,
-        }
-
-    # Reset Button (optional)
-    if st.sidebar.button("🔄 Reset Inputs"):
-        st.session_state.confirmed = False
-        st.experimental_rerun()
+            "base_maint": base_maint
+        })
