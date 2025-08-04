@@ -77,21 +77,21 @@ return temp_file.name
 # -----------------------------------------------------------------------------------------
 # Simulate HOA and Maintenance
 # ------------------------------------------------------------------------------------------
-def simulate_hoa_and_maintenance(months, base_hoa=100, base_maint=150, annual_inflation=0.03):
-hoa_list = []
-maint_list = []
-for m in range(months):
-inflation_factor = (1 + annual_inflation) ** (m / 12)
+    def simulate_hoa_and_maintenance(months, base_hoa=100, base_maint=150, annual_inflation=0.03):
+        hoa_list = []
+        maint_list = []
+    for m in range(months):
+        inflation_factor = (1 + annual_inflation) ** (m / 12)
 
-hoa = base_hoa * inflation_factor
-maintenance = base_maint * inflation_factor
+        hoa = base_hoa * inflation_factor
+        maintenance = base_maint * inflation_factor
 
-# Simulate major maintenance spikes every 5 or 10 years
-if m % 60 == 0 and m != 0:
-maintenance += 2000 * (0.75 + 0.5 * (m % 120 == 0))
+    # Simulate major maintenance spikes every 5 or 10 years
+    if m % 60 == 0 and m != 0:
+        maintenance += 2000 * (0.75 + 0.5 * (m % 120 == 0))
 
-hoa_list.append(round(hoa, 2))
-maint_list.append(round(maintenance, 2))
+        hoa_list.append(round(hoa, 2))
+        maint_list.append(round(maintenance, 2))
 
 return hoa_list, maint_list
 
@@ -101,8 +101,8 @@ return hoa_list, maint_list
 st.set_page_config(page_title="Mortgage Calculator", layout="centered")
 st.title("🏡 Mortgage Calculator")
 
-if "history" not in st.session_state:
-st.session_state.history = []
+    if "history" not in st.session_state:
+        st.session_state.history = []
 #------------------------------------------------------------------------------------------
 # Sidebar Inputs 
 #------------------------------------------------------------------------------------------
@@ -110,22 +110,22 @@ st.sidebar.header("Loan Setup")
 home_price = st.sidebar.number_input("Home Price ($)", min_value=10000, value=300000, step=1000)
 loan_type = st.sidebar.selectbox("Loan Type Preset", ["Conventional (20%)", "FHA (3.5%)", "VA (0%)", "Custom"])
 
-if loan_type == "Conventional (20%)":
-    default_down_percent = 20.0
-    default_interest = 6.5
-    default_term = 30
-elif loan_type == "FHA (3.5%)":
-    default_down_percent = 3.5
-    default_interest = 6.0
-    default_term = 30
-elif loan_type == "VA (0%)":
-    default_down_percent = 0.0
-    default_interest = 6.25
-    default_term = 30
-else:
-    default_down_percent = 10.0
-    default_interest = 6.5
-    default_term = 30
+    if loan_type == "Conventional (20%)":
+        default_down_percent = 20.0
+        default_interest = 6.5
+        default_term = 30
+    elif loan_type == "FHA (3.5%)":
+        default_down_percent = 3.5
+        default_interest = 6.0
+        default_term = 30
+    elif loan_type == "VA (0%)":
+        default_down_percent = 0.0
+        default_interest = 6.25
+        default_term = 30
+    else:
+        default_down_percent = 10.0
+        default_interest = 6.5
+        default_term = 30
 
 down_payment_percent_input = st.sidebar.number_input("Down Payment (% of Home Price)", 0.0, 100.0, value=default_down_percent, step=0.5)
 down_payment = home_price * (down_payment_percent_input / 100)
@@ -431,157 +431,158 @@ st.markdown("""
        """)
 
 with tab5:
-st.markdown('<div class="chart-kpi"><h3>📊 Side-by-Side Loan Comparison</h3></div>', unsafe_allow_html=True)
-col1, col2 = st.columns(2)
-with col1:
-st.markdown("### 🅰️ Loan A")
-with st.expander("🅰️ Loan A Inputs"):
-home_price_a = st.number_input("Home Price (A)", value=300000, key="price_a")
-down_payment_a = st.number_input("Down Payment (A)", value=60000, key="down_a")
-interest_a = st.number_input("Interest Rate % (A)", value=6.5, key="rate_a")
-term_a = st.selectbox("Term (A)", [15, 30], index=1, key="term_a")
-income_a = st.number_input("Monthly Income (A)", value=6000, key="income_a")
-
-with col2:
-st.markdown("### 🅱️ Loan B")
-with st.expander("🅱️ Loan B Inputs"):    
-home_price_b = st.number_input("Home Price (B)", value=325000, key="price_b")
-down_payment_b = st.number_input("Down Payment (B)", value=65000, key="down_b")
-interest_b = st.number_input("Interest Rate % (B)", value=6.0, key="rate_b")
-term_b = st.selectbox("Term (B)", [15, 30], index=1, key="term_b")
-income_b = st.number_input("Monthly Income (B)", value=6000, key="income_b")
+    st.markdown('<div class="chart-kpi"><h3>📊 Side-by-Side Loan Comparison</h3></div>', unsafe_allow_html=True)
+    col1, col2 = st.columns(2)
+    with col1:
+    st.markdown("### 🅰️ Loan A")
+    with st.expander("🅰️ Loan A Inputs"):
+    home_price_a = st.number_input("Home Price (A)", value=300000, key="price_a")
+    down_payment_a = st.number_input("Down Payment (A)", value=60000, key="down_a")
+    interest_a = st.number_input("Interest Rate % (A)", value=6.5, key="rate_a")
+    term_a = st.selectbox("Term (A)", [15, 30], index=1, key="term_a")
+    income_a = st.number_input("Monthly Income (A)", value=6000, key="income_a")
+    
+    with col2:
+    st.markdown("### 🅱️ Loan B")
+    with st.expander("🅱️ Loan B Inputs"):    
+    home_price_b = st.number_input("Home Price (B)", value=325000, key="price_b")
+    down_payment_b = st.number_input("Down Payment (B)", value=65000, key="down_b")
+    interest_b = st.number_input("Interest Rate % (B)", value=6.0, key="rate_b")
+    term_b = st.selectbox("Term (B)", [15, 30], index=1, key="term_b")
+    income_b = st.number_input("Monthly Income (B)", value=6000, key="income_b")
 
 def calc_mortgage(p, r, n):
-r_month = r / 12 / 100
-n_months = n * 12
-return p / n_months if r_month == 0 else p * (r_month * (1 + r_month)**n_months) / ((1 + r_month)**n_months - 1)
-
-loan_amt_a = home_price_a - down_payment_a
-loan_amt_b = home_price_b - down_payment_b
-
-monthly_a = calc_mortgage(loan_amt_a, interest_a, term_a)
-monthly_b = calc_mortgage(loan_amt_b, interest_b, term_b)
-
-st.markdown("### 🔍 Loan Comparison Summary")
-with st.expander("📊 Comparison Summary"):    
-comparison = {
-"Metric": [
-"Home Price", "Loan Amount", "Interest Rate", "Term (years)",
-"Monthly Payment", "DTI % (Monthly / Income)"
-],
-"Loan A": [
-f"${home_price_a:,.2f}", f"${loan_amt_a:,.2f}", f"{interest_a:.2f}%", f"{term_a}",
-f"${monthly_a:,.2f}", f"{(monthly_a / income_a * 100):.2f}%"
-],
-"Loan B": [
-f"${home_price_b:,.2f}", f"${loan_amt_b:,.2f}", f"{interest_b:.2f}%", f"{term_b}",
-f"${monthly_b:,.2f}", f"{(monthly_b / income_b * 100):.2f}%"
-]
-}
-
-df_compare = pd.DataFrame(comparison)
-st.dataframe(df_compare, use_container_width=True)    
+    r_month = r / 12 / 100
+    n_months = n * 12
+    return p / n_months if r_month == 0 else p * (r_month * (1 + r_month)**n_months) / ((1 + r_month)**n_months - 1)
+    
+    loan_amt_a = home_price_a - down_payment_a
+    loan_amt_b = home_price_b - down_payment_b
+    
+    monthly_a = calc_mortgage(loan_amt_a, interest_a, term_a)
+    monthly_b = calc_mortgage(loan_amt_b, interest_b, term_b)
+    
+    st.markdown("### 🔍 Loan Comparison Summary")
+    with st.expander("📊 Comparison Summary"):    
+    comparison = {
+    "Metric": [
+    "Home Price", "Loan Amount", "Interest Rate", "Term (years)",
+    "Monthly Payment", "DTI % (Monthly / Income)"
+    ],
+    "Loan A": [
+    f"${home_price_a:,.2f}", f"${loan_amt_a:,.2f}", f"{interest_a:.2f}%", f"{term_a}",
+    f"${monthly_a:,.2f}", f"{(monthly_a / income_a * 100):.2f}%"
+    ],
+    "Loan B": [
+    f"${home_price_b:,.2f}", f"${loan_amt_b:,.2f}", f"{interest_b:.2f}%", f"{term_b}",
+    f"${monthly_b:,.2f}", f"{(monthly_b / income_b * 100):.2f}%"
+    ]
+    }
+    
+    df_compare = pd.DataFrame(comparison)
+    st.dataframe(df_compare, use_container_width=True)    
 
 
 
 with tab6:
-st.markdown('<div class="chart-kpi"><h3>📂 Calculation History</h3></div>', unsafe_allow_html=True)
-with st.expander("📁 View Saved Calculations", expanded=True):
-if st.session_state.history:
-df_history = pd.DataFrame(st.session_state.history)
-
-gb = GridOptionsBuilder.from_dataframe(df_history)
-gb.configure_pagination()
-gb.configure_default_column(groupable=True, value=True, editable=False)
-gb.configure_selection(selection_mode="single", use_checkbox=True)
-grid_options = gb.build()
-
-grid_response = AgGrid(
-df_history,
-gridOptions=grid_options,
-height=400,
-theme="streamlit",
-fit_columns_on_grid_load=True,
-update_mode=GridUpdateMode.SELECTION_CHANGED
-)
-
-selected = grid_response['selected_rows']
-
-if selected:
-selected_data = selected[0]
-
-pdf_data = {
-"Home Price": selected_data.get("Home Price"),
-"Loan Amount": selected_data.get("Loan Amount"),
-"Interest Rate": selected_data.get("Interest Rate"),
-"Loan Term": selected_data.get("Loan Term"),
-"P&I": selected_data.get("P&I"),
-"Tax": selected_data.get("Tax"),
-"Insurance": selected_data.get("Insurance"),
-"PMI": selected_data.get("PMI"),
-"HOA": selected_data.get("HOA"),
-"Maintenance": selected_data.get("Maintenance"),
-"Total Payment": selected_data.get("Total Payment"),
-"DTI": selected_data.get("DTI"),
-"Payoff Time": selected_data.get("Payoff Time"),
-"Total Paid": selected_data.get("Total Paid"),
-"Total Interest": selected_data.get("Total Interest"),
-}
+    st.markdown('<div class="chart-kpi"><h3>📂 Calculation History</h3></div>', unsafe_allow_html=True)
+    with st.expander("📁 View Saved Calculations", expanded=True):
+    if st.session_state.history:
+    df_history = pd.DataFrame(st.session_state.history)
+    
+    gb = GridOptionsBuilder.from_dataframe(df_history)
+    gb.configure_pagination()
+    gb.configure_default_column(groupable=True, value=True, editable=False)
+    gb.configure_selection(selection_mode="single", use_checkbox=True)
+    grid_options = gb.build()
+    
+    grid_response = AgGrid(
+    df_history,
+    gridOptions=grid_options,
+    height=400,
+    theme="streamlit",
+    fit_columns_on_grid_load=True,
+    update_mode=GridUpdateMode.SELECTION_CHANGED
+    )
+    
+    selected = grid_response['selected_rows']
+    
+    if selected:
+    selected_data = selected[0]
+    
+    pdf_data = {
+    "Home Price": selected_data.get("Home Price"),
+    "Loan Amount": selected_data.get("Loan Amount"),
+    "Interest Rate": selected_data.get("Interest Rate"),
+    "Loan Term": selected_data.get("Loan Term"),
+    "P&I": selected_data.get("P&I"),
+    "Tax": selected_data.get("Tax"),
+    "Insurance": selected_data.get("Insurance"),
+    "PMI": selected_data.get("PMI"),
+    "HOA": selected_data.get("HOA"),
+    "Maintenance": selected_data.get("Maintenance"),
+    "Total Payment": selected_data.get("Total Payment"),
+    "DTI": selected_data.get("DTI"),
+    "Payoff Time": selected_data.get("Payoff Time"),
+    "Total Paid": selected_data.get("Total Paid"),
+    "Total Interest": selected_data.get("Total Interest"),
+    }
 
 from fpdf import FPDF
-pdf = FPDF()
-pdf.add_page()
-pdf.set_font("Arial", size=12)
-pdf.cell(200, 10, txt="🏡 Mortgage Report", ln=True, align="C")
-
-for key, value in pdf_data.items():
-pdf.cell(200, 10, txt=f"{key}: {value}", ln=True)
-
-pdf_output = "/tmp/mortgage_report.pdf"
-pdf.output(pdf_output)
-
-with open(pdf_output, "rb") as f:
-st.download_button(
-label="📥 Download Selected Report as PDF",
-data=f,
-file_name="mortgage_report.pdf",
-mime="application/pdf"
-)
-else:
-st.info("No calculations saved yet.")
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+    pdf.cell(200, 10, txt="🏡 Mortgage Report", ln=True, align="C")
+    
+    for key, value in pdf_data.items():
+    pdf.cell(200, 10, txt=f"{key}: {value}", ln=True)
+    
+    pdf_output = "/tmp/mortgage_report.pdf"
+    pdf.output(pdf_output)
+    
+    with open(pdf_output, "rb") as f:
+    st.download_button(
+    label="📥 Download Selected Report as PDF",
+    data=f,
+    file_name="mortgage_report.pdf",
+    mime="application/pdf"
+    )
+    else:
+    st.info("No calculations saved yet.")
+    
+    with tab7:
+    csv = df_monthly.to_csv(index=False).encode('utf-8')
+    st.download_button("Download CSV", data=csv, file_name="monthly_amortization.csv", mime="text/csv")
+    pdf_data = {
+    "Home Price": home_price,
+    "Loan Amount": loan_amount,
+    "Interest Rate": interest_rate,
+    "Loan Term": loan_term_years,
+    "P&I": round(monthly_principal_interest, 2),
+    "Tax": round(monthly_property_tax, 2),
+    "Insurance": round(monthly_insurance, 2),
+    "PMI": round(initial_pmi_monthly, 2),
+    "HOA": round(base_hoa, 2),
+    "Maintenance": round(base_maint, 2),
+    "Total Payment": round(total_monthly_payment, 2),
+    "DTI": round((total_monthly_payment / monthly_income) * 100, 2),
+    "Payoff Time": f"{years}y {months}m",
+    "Total Paid": round(df_monthly['Payment'].sum(), 2),
+    "Total Interest": round(df_monthly['Interest'].sum(), 2),
+    }
+    
+    pdf_path = generate_pdf_summary(pdf_data)
 
 with tab7:
-csv = df_monthly.to_csv(index=False).encode('utf-8')
-st.download_button("Download CSV", data=csv, file_name="monthly_amortization.csv", mime="text/csv")
-pdf_data = {
-"Home Price": home_price,
-"Loan Amount": loan_amount,
-"Interest Rate": interest_rate,
-"Loan Term": loan_term_years,
-"P&I": round(monthly_principal_interest, 2),
-"Tax": round(monthly_property_tax, 2),
-"Insurance": round(monthly_insurance, 2),
-"PMI": round(initial_pmi_monthly, 2),
-"HOA": round(base_hoa, 2),
-"Maintenance": round(base_maint, 2),
-"Total Payment": round(total_monthly_payment, 2),
-"DTI": round((total_monthly_payment / monthly_income) * 100, 2),
-"Payoff Time": f"{years}y {months}m",
-"Total Paid": round(df_monthly['Payment'].sum(), 2),
-"Total Interest": round(df_monthly['Interest'].sum(), 2),
-}
-
-pdf_path = generate_pdf_summary(pdf_data)
-
-with tab7:
-with open(pdf_path, "rb") as file:
-st.download_button(
-label="📄 Download PDF Report",
-data=file,
-file_name="Mortgage_Summary.pdf",
-mime="application/pdf"
-)
-~
+    with open(pdf_path, "rb") as file:
+    st.download_button(
+    label="📄 Download PDF Report",
+    data=file,
+    file_name="Mortgage_Summary.pdf",
+    mime="application/pdf"
+    )
+    ~
+    
 
 
 
