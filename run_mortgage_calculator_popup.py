@@ -11,7 +11,7 @@ from sidebar import render_sidebar
 
 st.set_page_config(page_title="Mortgage Calculator", layout="wide")
 
-def load_local_css(file_path):
+
 with open(file_path) as f:
 st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
@@ -583,3 +583,4 @@ file_name="Mortgage_Summary.pdf",
 mime="application/pdf"
 )
 ~
+
