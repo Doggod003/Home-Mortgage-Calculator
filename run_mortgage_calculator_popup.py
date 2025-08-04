@@ -107,7 +107,7 @@ if "history" not in st.session_state:
 #sidebar   
 #----    
 render_sidebar()
-st.write("DEBUG: ", st.session_state.get("home_price"))
+
 if st.session_state.get("confirmed") and "inputs" in st.session_state:
     inputs = st.session_state.inputs
 
@@ -556,6 +556,7 @@ with tab6:
                 file_name="Mortgage_Summary.pdf",
                 mime="application/pdf"
             )
+
 
 
 
