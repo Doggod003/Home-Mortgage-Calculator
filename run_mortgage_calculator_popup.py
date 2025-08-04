@@ -107,7 +107,9 @@ if "history" not in st.session_state:
 #sidebar   
 #----    
 render_sidebar()
-
+if not st.session_state.get("inputs_ready"):
+    st.warning("Please confirm your loan setup using the sidebar.")
+    st.stop()
 if st.session_state.get("confirmed") and "inputs" in st.session_state:
     inputs = st.session_state.inputs
 
@@ -556,4 +558,5 @@ with tab6:
                 file_name="Mortgage_Summary.pdf",
                 mime="application/pdf"
             )
+
 
