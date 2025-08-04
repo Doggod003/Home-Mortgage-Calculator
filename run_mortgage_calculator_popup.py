@@ -20,24 +20,24 @@ def load_local_css(file_path):
 load_local_css("assets/tabs.css")
 #---------------------------------------------------------------------------
 class MortgagePDF(FPDF):
-def header(self):
-self.set_font("Arial", "B", 12)
-self.cell(0, 10, "Mortgage Summary Report", ln=True, align="C")
-self.ln(10)
-
-def section_title(self, title):
-self.set_font("Arial", "B", 11)
-self.cell(0, 10, title, ln=True)
-self.ln(1)
-
-def section_body(self, text):
-self.set_font("Arial", "", 10)
-self.multi_cell(0, 8, text)
-self.ln()
-
-def generate_pdf_summary(summary_data):
-pdf = MortgagePDF()
-pdf.add_page()
+    def header(self):
+        self.set_font("Arial", "B", 12)
+        self.cell(0, 10, "Mortgage Summary Report", ln=True, align="C")
+        self.ln(10)
+    
+    def section_title(self, title):
+        self.set_font("Arial", "B", 11)
+        self.cell(0, 10, title, ln=True)
+        self.ln(1)
+        
+    def section_body(self, text):
+        self.set_font("Arial", "", 10)
+        self.multi_cell(0, 8, text)
+        self.ln()
+    
+    def generate_pdf_summary(summary_data):
+        pdf = MortgagePDF()
+        pdf.add_page()
 
 pdf.section_title("Loan Overview")
 overview = (
@@ -582,6 +582,7 @@ file_name="Mortgage_Summary.pdf",
 mime="application/pdf"
 )
 ~
+
 
 
 
